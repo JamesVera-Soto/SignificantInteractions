@@ -4,8 +4,8 @@ A KBase module: SignificantInteractions
 
 module SignificantInteractions {
     typedef structure {
-        string report_name;
-        string report_ref;
+        string MatrixIds;
+        float cutoff;
     } ReportResults;
 
     /*

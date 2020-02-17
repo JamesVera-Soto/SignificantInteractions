@@ -24,12 +24,20 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    parameter_1 :
+    MatrixIds :
         ui-name : |
-            First parameter
+            List of CorrelationMatrix's
         short-hint : |
             The first parameter
         long-hint  : |
+            The first parameter that needs to be entered to drive the method. This might be the first of many.
+
+    cutoff :
+        ui-name: |
+            Cutoff
+        short-hint: |
+            Considering only correlations >= cutoff
+        long-hint: |
             The first parameter that needs to be entered to drive the method. This might be the first of many.
 
 description : |

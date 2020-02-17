@@ -7,6 +7,7 @@ MAINTAINER KBase Developer
 # installation scripts.
 
 # RUN apt-get update
+RUN pip install pandas
 
 
 # -----------------------------------------

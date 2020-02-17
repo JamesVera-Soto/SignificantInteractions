@@ -2,8 +2,10 @@
 #BEGIN_HEADER
 import logging
 import os
-
-from installed_clients.KBaseReportClient import KBaseReport
+import uuid
+from ..SignificantInteractions.SI_Utils import SIintersect
+from ..installed_clients.KBaseReportClient import KBaseReport
+from ..installed_clients.DataFIleUtilClient import DataFileUtil
 #END_HEADER
 
 
@@ -34,6 +36,8 @@ class SignificantInteractions:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         self.callback_url = os.environ['SDK_CALLBACK_URL']
+        self.token = os.environ['KB_AUTH_TOKEN']
+        self.wsURL = config['workspace-url']
         self.shared_folder = config['scratch']
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
@@ -51,13 +55,25 @@ class SignificantInteractions:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_SignificantInteractions
-        report = KBaseReport(self.callback_url)
-        report_info = report.create({'report': {'objects_created':[],
-                                                'text_message': params['parameter_1']},
-                                                'workspace_name': params['workspace_name']})
+
+        MatrixIds = params.get('MatrixIds')
+        cutoff = params.get('cutoff')
+
+        SI = SIintersect(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
+        the_dict = SI.run(MatrixIds=MatrixIds, cutoff=cutoff)
+
+        report_client = KBaseReport(self.callback_url, token=self.token)
+        report_name = "Significant_Interaction_Intersect_" + str(uuid.uuid4())
+        report_info = report_client.create_extended_report({
+            'direct_html_link_index': 0,
+            'file_links': file_links,
+            'html_links': img_paths_and_html_paths_dict['html_paths'],
+            'report_object_name': report_name,
+            'workspace_name': params['workspace_name']
+        })
         output = {
-            'report_name': report_info['name'],
             'report_ref': report_info['ref'],
+            'report_name': report_info['name'],
         }
         #END run_SignificantInteractions
 
@@ -66,7 +82,7 @@ class SignificantInteractions:
             raise ValueError('Method run_SignificantInteractions return value ' +
                              'output is not type dict as required.')
         # return the results
-        return [output]
+        return [report_info]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",
