@@ -6,6 +6,7 @@ module SignificantInteractions {
     typedef structure {
         string MatrixIds;
         float cutoff;
+        int frequency;
     } ReportResults;
 
     /*

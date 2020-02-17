@@ -33,6 +33,18 @@
                 "min_float" : 0.0,
                 "max_float" : 1.0
             }
+        },
+        {
+            "id": "frequency",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_int" : 0
+            }
         }
     ],
     "behavior": {
@@ -53,6 +65,10 @@
                 {
                     "input_parameter" : "cutoff",
                     "target_property" : "cutoff"
+                },
+                {
+                    "input_parameter" : "frequency",
+                    "target_property" : "frequency"
                 },
                 {
                     "narrative_system_variable": "workspace_id",

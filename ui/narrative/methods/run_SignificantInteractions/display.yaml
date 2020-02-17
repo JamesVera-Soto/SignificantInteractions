@@ -1,10 +1,10 @@
 #
 # define display information
 #
-name: Method Name Here
+name: SignificantInteractions
 
 tooltip: |
-    Perform some kind of method
+    Finds intersection of significant interactions of multiple matrices.
 
 screenshots: []
 
@@ -28,7 +28,7 @@ parameters :
         ui-name : |
             List of CorrelationMatrix's
         short-hint : |
-            The first parameter
+            Add CorrelationMatrix's here
         long-hint  : |
             The first parameter that needs to be entered to drive the method. This might be the first of many.
 
@@ -36,7 +36,15 @@ parameters :
         ui-name: |
             Cutoff
         short-hint: |
-            Considering only correlations >= cutoff
+            Frequency is counted when significance is greater or equal to cutoff.
+        long-hint: |
+            The first parameter that needs to be entered to drive the method. This might be the first of many.
+
+    frequency:
+        ui-name: |
+            Frequency
+        short-hint: |
+            Number of matrices where OTU1<->OTU2 interaction is found significant
         long-hint: |
             The first parameter that needs to be entered to drive the method. This might be the first of many.
 

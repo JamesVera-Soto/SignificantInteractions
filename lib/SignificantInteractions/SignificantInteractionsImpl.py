@@ -3,9 +3,9 @@
 import logging
 import os
 import uuid
-from ..SignificantInteractions.SI_Utils import SIintersect
-from ..installed_clients.KBaseReportClient import KBaseReport
-from ..installed_clients.DataFIleUtilClient import DataFileUtil
+from SignificantInteractions.SI_Utils import SI
+from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.DataFIleUtilClient import DataFileUtil
 #END_HEADER
 
 
@@ -58,16 +58,16 @@ class SignificantInteractions:
 
         MatrixIds = params.get('MatrixIds')
         cutoff = params.get('cutoff')
+        frequency = params.get('frequency')
 
-        SI = SIintersect(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
-        the_dict = SI.run(MatrixIds=MatrixIds, cutoff=cutoff)
+        si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
+        html_paths = si.run(MatrixIds=MatrixIds, cutoff=cutoff, frequency=frequency)
 
         report_client = KBaseReport(self.callback_url, token=self.token)
         report_name = "Significant_Interaction_Intersect_" + str(uuid.uuid4())
         report_info = report_client.create_extended_report({
             'direct_html_link_index': 0,
-            'file_links': file_links,
-            'html_links': img_paths_and_html_paths_dict['html_paths'],
+            'html_links': html_paths,
             'report_object_name': report_name,
             'workspace_name': params['workspace_name']
         })
