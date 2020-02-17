@@ -58,19 +58,27 @@
       <option name="project" value="LOCAL" />
       <updated>1581976913152</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="CorrelationMatrix valid_ws_types">
+      <created>1581980302728</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1581980302728</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="DataFileUtil" />
     <MESSAGE value="OK run html only" />
-    <option name="LAST_COMMIT_MESSAGE" value="OK run html only" />
+    <MESSAGE value="CorrelationMatrix valid_ws_types" />
+    <option name="LAST_COMMIT_MESSAGE" value="CorrelationMatrix valid_ws_types" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="783" y="86" width="792" height="807" key="CommitChangelistDialog2" timestamp="1581976912871">
+    <state x="783" y="86" width="792" height="807" key="CommitChangelistDialog2" timestamp="1581980302382">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="783" y="86" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1581976912871" />
+    <state x="783" y="86" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1581980302382" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="574" y="73" key="SettingsEditor" timestamp="1581802479842">
       <screen x="67" y="27" width="1853" height="923" />
