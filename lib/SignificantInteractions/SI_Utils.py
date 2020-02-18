@@ -21,35 +21,44 @@ class SI:
 
         obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
+        co = obj['data'][0]['data']['coefficient_data']
+        co_rows = co['row_ids']
+        co_cols = co['col_ids']
+        co_vals = co['values']
+
+        co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
+
         sig = obj['data'][0]['data']['significance_data']
         sig_rows = sig['row_ids']
         sig_cols = sig['col_ids']
         sig_vals = sig['values']
 
-        mat = pd.DataFrame(index=sig_rows, columns=sig_cols)
-        for i in range(len(mat.index)):
-            mat.iloc[i] = sig_vals[i]
-        return mat
+        sig_mat = pd.DataFrame(sig_vals, index=sig_rows, columns=sig_cols)
+
+        return [sig_mat, co_mat]
 
     #
-    def push_to_dict(self, matrix, cutoff):
-        otu_1s = matrix.index
-        otu_2s = matrix.columns
-        for i in range(len(matrix.index)):
-            for j in range(i + 1, len(matrix.index)):
+    def push_to_dict(self, sig_matrix, co_matrix, cutoff):
+        otu_1s = sig_matrix.index
+        otu_2s = sig_matrix.columns
+        for i in range(len(sig_matrix.index)):
+            for j in range(i + 1, len(sig_matrix.index)):
                 key = otu_1s[i] + '<->' + otu_2s[j]
-                val = matrix.iloc[i][j]
-                if val >= cutoff:
+                sig_val = sig_matrix.iloc[i][j]
+                co_val = co_matrix[otu_1s[i]][otu_2s[j]]
+                if sig_val >= cutoff:
                     try:
-                        self.a_dict[key][0] += val
-                        self.a_dict[key][1] += 1
+                        self.a_dict[key][0] += sig_val
+                        self.a_dict[key][1] += co_val
+                        self.a_dict[key][2] += 1
                     except KeyError:
-                        self.a_dict.update({key: [val, 1]})
+                        self.a_dict.update({key: [sig_val, co_val, 1]})
                 else:
                     try:
-                        self.a_dict[key][0] += val
+                        self.a_dict[key][0] += sig_val
+                        self.a_dict[key][1] += co_val
                     except KeyError:
-                        self.a_dict.update({key: [val, 0]})
+                        self.a_dict.update({key: [sig_val, co_val, 0]})
 
     def to_html(self, frequency, quantity):
         # set up directory in scratch
@@ -62,19 +71,19 @@ class SI:
         # Make dict to make html file
         html_dict = {}
         for key, val in self.a_dict.items():
-            if val[1] >= frequency:
-                html_dict.update({key: [val[0] / quantity, val[1]]})
+            if val[2] >= frequency:
+                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
         # Make html_str out of html_dict
         html_str = "<html>" \
                    "<body>" \
                    '<table border="2">' \
                    "<tr>" \
-                   "<td>OTUs: </td><td>Average Significance: </td><td>Frequency: </td>" \
+                   "<td>OTUs: </td><td>Average Significance: </td> <td>Average Correlation: </td> <td>Frequency:</td>" \
                    "</tr>"
         for key, val in html_dict.items():
             html_str += "<tr>" \
-                        "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td><td>" + str(val[1]) + " / " + str(
-                quantity) + "</td>" \
+                        "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td><td>" + str(round(val[1], 5)) \
+                        + "</td><td>" + str(val[2]) + " / " + str(quantity) + "</td>" \
                             "</tr>"
         html_str += "</table>" \
                     "</body>" \
@@ -96,8 +105,8 @@ class SI:
 
     def run(self, MatrixIds, cutoff, frequency):
         for Id in MatrixIds:
-            m = self.get_pd_matrix(MatrixId=Id)
-            self.push_to_dict(matrix=m, cutoff=cutoff)
+            mats = self.get_pd_matrix(MatrixId=Id)
+            self.push_to_dict(sig_matrix=mats[0], co_matrix=mats[1], cutoff=cutoff)
         return self.to_html(frequency=frequency, quantity=len(MatrixIds))
 
 
