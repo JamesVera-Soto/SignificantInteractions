@@ -29,6 +29,62 @@ class SignificantInteractions:
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
+    def _df_to_list(self, df, threshold=None):
+        """
+        _df_to_list: convert Dataframe to FloatMatrix2D matrix data
+        """
+
+        df.fillna(0, inplace=True)
+
+        if threshold:
+            drop_cols = list()
+            for col in df.columns:
+                if all(df[col] < threshold) and all(df[col] > -threshold):
+                    drop_cols.append(col)
+            df.drop(columns=drop_cols, inplace=True, errors='ignore')
+
+            drop_idx = list()
+            for idx in df.index:
+                if all(df.loc[idx] < threshold) and all(df.loc[idx] > -threshold):
+                    drop_idx.append(idx)
+            df.drop(index=drop_idx, inplace=True, errors='ignore')
+
+        matrix_data = {'row_ids': df.index.tolist(),
+                       'col_ids': df.columns.tolist(),
+                       'values': df.values.tolist()}
+
+        return matrix_data
+
+    def _save_corr_matrix(self, workspace_name, corr_matrix_name, corr_df, sig_df, matrix_ref=None):
+        """
+        _save_corr_matrix: save
+        KBaseExperiments.CorrelationMatrix
+        object
+        """
+
+        if not isinstance(workspace_name, int):
+            ws_name_id = self.dfu.ws_name_to_id(workspace_name)
+        else:
+            ws_name_id = workspace_name
+        corr_data = {}
+        corr_data.update({'coefficient_data': self._df_to_list(corr_df)})
+
+        if matrix_ref:
+            corr_data.update({'original_matrix_ref': matrix_ref})
+
+        if sig_df is not None:
+            corr_data.update({'significance_data': self._df_to_list(sig_df)})
+
+        obj_type = 'KBaseExperiments.CorrelationMatrix'
+        info = self.dfu.save_objects({
+                "id": ws_name_id,
+                "objects": [{
+                    "type": obj_type,
+                    "data": corr_data,
+                    "name": corr_matrix_name
+                    }]
+                })[0]
+        return "%s/%s/%s" % (info[6], info[0], info[4])
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -39,6 +95,7 @@ class SignificantInteractions:
         self.token = os.environ['KB_AUTH_TOKEN']
         self.wsURL = config['workspace-url']
         self.shared_folder = config['scratch']
+        self.dfu = DataFileUtil(self.callback_url)
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
         #END_CONSTRUCTOR
@@ -59,15 +116,22 @@ class SignificantInteractions:
         MatrixIds = params.get('MatrixIds')
         cutoff = params.get('cutoff')
         frequency = params.get('frequency')
+        corr_matrix_name = params.get('corr_matrix_name')
 
         si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
-        html_paths = si.run(MatrixIds=MatrixIds, cutoff=cutoff, frequency=frequency)
+        si_dict = si.run(MatrixIds=MatrixIds, cutoff=cutoff, frequency=frequency)
+
+        corr_matrix_obj_ref = self._save_corr_matrix(workspace_name=params['workspace_name'],
+                                                     corr_matrix_name=corr_matrix_name,
+                                                     corr_df=si_dict['corr_df'], sig_df=si_dict['sig_df'])
 
         report_client = KBaseReport(self.callback_url, token=self.token)
         report_name = "Significant_Interaction_Intersect_" + str(uuid.uuid4())
         report_info = report_client.create_extended_report({
+            'objects_created': [{'ref': corr_matrix_obj_ref,
+                                 'description': 'Correlation Matrix'}],
             'direct_html_link_index': 0,
-            'html_links': html_paths,
+            'html_links': si_dict['html_paths'],
             'report_object_name': report_name,
             'workspace_name': params['workspace_name']
         })

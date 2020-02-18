@@ -67,4 +67,5 @@ class SignificantInteractionsTest(unittest.TestCase):
                                                                                     '38056/13/1'],
                                                                       'cutoff': 0.7,
                                                                       'frequency': 2,
+                                                                      'corr_matrix_name': "testingMatrix",
                                                                       'workspace_name': self.wsName})

@@ -7,6 +7,7 @@ module SignificantInteractions {
         string MatrixIds;
         float cutoff;
         int frequency;
+        string corr_matrix_name;
     } ReportResults;
 
     /*

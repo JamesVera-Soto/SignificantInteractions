@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignificantInteractions.spec" beforeDir="false" afterPath="$PROJECT_DIR$/SignificantInteractions.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +36,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -72,7 +77,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581980605635</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="correlation values">
+      <created>1582053999308</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1582053999308</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -80,21 +92,23 @@
     <MESSAGE value="OK run html only" />
     <MESSAGE value="CorrelationMatrix valid_ws_types" />
     <MESSAGE value="KBaseExperiments.CorrelationMatrix valid_ws_types" />
-    <option name="LAST_COMMIT_MESSAGE" value="KBaseExperiments.CorrelationMatrix valid_ws_types" />
+    <MESSAGE value="correlation values" />
+    <option name="LAST_COMMIT_MESSAGE" value="correlation values" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="783" y="86" width="792" height="807" key="CommitChangelistDialog2" timestamp="1581980605422">
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582053999067">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="783" y="86" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1581980605422" />
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582053999067" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
-    <state x="574" y="73" key="SettingsEditor" timestamp="1581802479842">
-      <screen x="67" y="27" width="1853" height="923" />
-    </state>
-    <state x="574" y="73" key="SettingsEditor/67.27.1853.923@67.27.1853.923" timestamp="1581802479842" />
-    <state x="536" y="250" width="672" height="678" key="search.everywhere.popup" timestamp="1581957991865">
+    <state x="508" y="78" key="SettingsEditor" timestamp="1582066400160">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="536" y="250" width="672" height="678" key="search.everywhere.popup/67.27.1613.1023@67.27.1613.1023" timestamp="1581957991865" />
+    <state x="508" y="78" key="SettingsEditor/67.27.1613.1023@67.27.1613.1023" timestamp="1582066400160" />
+    <state x="574" y="73" key="SettingsEditor/67.27.1853.923@67.27.1853.923" timestamp="1581802479842" />
+    <state x="835" y="234" width="672" height="678" key="search.everywhere.popup" timestamp="1582056580545">
+      <screen x="67" y="27" width="1613" height="1023" />
+    </state>
+    <state x="835" y="234" width="672" height="678" key="search.everywhere.popup/67.27.1613.1023@67.27.1613.1023" timestamp="1582056580545" />
   </component>
 </project>

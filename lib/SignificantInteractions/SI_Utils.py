@@ -14,6 +14,8 @@ class SI:
         self.scratch = scratch
         self.a_dict = {}
         self.html_paths = []
+        self.corr_df = None
+        self.sig_df = None
         self.dfu = DataFileUtil(self.callback_url)
 
     # Returns Significance Matrix pd.DataFrame(): get_pd_matrix(MatrixId)
@@ -68,11 +70,24 @@ class SI:
         html_folder = os.path.join(output_dir, 'html')
         os.mkdir(html_folder)
 
+        # lists
+        row_col_list = []
+        val_list = []
         # Make dict to make html file
         html_dict = {}
         for key, val in self.a_dict.items():
+            OTUs = key.split('<->')
+            if OTUs[0] not in row_col_list:
+                row_col_list.append(OTUs[0])
+            if OTUs[1] not in row_col_list:
+                row_col_list.append(OTUs[1])
             if val[2] >= frequency:
-                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
+                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})\
+        # sort row_col_list
+        row_col_list.sort()
+        # pandas DataFrame
+        self.corr_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
+        self.sig_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         # Make html_str out of html_dict
         html_str = "<html>" \
                    "<body>" \
@@ -81,6 +96,13 @@ class SI:
                    "<td>OTUs: </td><td>Average Significance: </td> <td>Average Correlation: </td> <td>Frequency:</td>" \
                    "</tr>"
         for key, val in html_dict.items():
+            # Push values into df matrices
+            OTUs = key.split('<->')
+            self.corr_df[OTUs[0]][OTUs[1]] = val[1]
+            self.corr_df[OTUs[1]][OTUs[0]] = val[1]
+            self.sig_df[OTUs[0]][OTUs[1]] = val[0]
+            self.sig_df[OTUs[1]][OTUs[0]] = val[0]
+            # html part
             html_str += "<tr>" \
                         "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td><td>" + str(round(val[1], 5)) \
                         + "</td><td>" + str(val[2]) + " / " + str(quantity) + "</td>" \
@@ -101,13 +123,17 @@ class SI:
                                 'name': 'index.html',
                                 'label': 'html files',
                                 'description': "desc"})
-        return self.html_paths
 
     def run(self, MatrixIds, cutoff, frequency):
         for Id in MatrixIds:
             mats = self.get_pd_matrix(MatrixId=Id)
             self.push_to_dict(sig_matrix=mats[0], co_matrix=mats[1], cutoff=cutoff)
-        return self.to_html(frequency=frequency, quantity=len(MatrixIds))
+        self.to_html(frequency=frequency, quantity=len(MatrixIds))
+        return {
+            'html_paths': self.html_paths,
+            'corr_df': self.corr_df,
+            'sig_df': self.sig_df
+        }
 
 
 """class SIintersect:
