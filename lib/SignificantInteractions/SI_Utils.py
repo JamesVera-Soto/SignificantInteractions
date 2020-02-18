@@ -76,13 +76,14 @@ class SI:
         # Make dict to make html file
         html_dict = {}
         for key, val in self.a_dict.items():
-            OTUs = key.split('<->')
-            if OTUs[0] not in row_col_list:
-                row_col_list.append(OTUs[0])
-            if OTUs[1] not in row_col_list:
-                row_col_list.append(OTUs[1])
+            # test criteria for html_dict and DataFrame
             if val[2] >= frequency:
-                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})\
+                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
+                OTUs = key.split('<->')
+                if OTUs[0] not in row_col_list:
+                    row_col_list.append(OTUs[0])
+                if OTUs[1] not in row_col_list:
+                    row_col_list.append(OTUs[1])
         # sort row_col_list
         row_col_list.sort()
         # pandas DataFrame
