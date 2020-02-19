@@ -12,7 +12,7 @@ class SI:
         self.token = token
         self.callback_url = callback_url
         self.scratch = scratch
-        self.a_dict = {}
+        self.a_dict = {}  # values are list in form [sig_val, corr_val, frequency]
         self.html_paths = []
         self.corr_df = None
         self.sig_df = None
@@ -21,12 +21,14 @@ class SI:
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
     def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
+        # Initialize dictionary to be returned
         returning_dict = {
             'corr_mat': None,
             'sig_mat': None
         }
         obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
+        # If 'coefficient_data' exist
         if obj['data'][0]['data']['coefficient_data']:
             co = obj['data'][0]['data']['coefficient_data']
             co_rows = co['row_ids']
@@ -35,6 +37,7 @@ class SI:
             co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
             returning_dict['corr_mat'] = co_mat
 
+        # If 'significant_data' exist
         if obj['data'][0]['data']['significance_data']:
             sig = obj['data'][0]['data']['significance_data']
             sig_rows = sig['row_ids']
@@ -45,18 +48,22 @@ class SI:
 
         return returning_dict
 
-    #
+    # Push matrix keys(index<->column) and values into dictionary
     def push_to_dict(self, matrix_dict, sig_cutoff, corr_cutoff):
         if sig_cutoff is not None and corr_cutoff is not None:
             otu_1s = matrix_dict['sig_mat'].index
             otu_2s = matrix_dict['sig_mat'].columns
+            # Go through half of matrix since keys/values repeat, keys just in reverse
             for i in range(len(matrix_dict['sig_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
-                    otu_to_sort = [otu_1s[i], otu_2s[j]]
-                    otu_to_sort.sort()
-                    key = otu_to_sort[0] + '<->' + otu_to_sort[1]
+                    # Get otu's for key and then sort to cover both possibilities
+                    # so won't be seperate when pushing into dict
+                    sorted_otus = [otu_1s[i], otu_2s[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
                     sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
                     co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
+                    # Increment frequency if
                     if sig_val <= sig_cutoff and co_val >= corr_cutoff:
                         try:
                             self.a_dict[key][0] += sig_val
@@ -64,6 +71,7 @@ class SI:
                             self.a_dict[key][2] += 1
                         except KeyError:
                             self.a_dict.update({key: [sig_val, co_val, 1]})
+                    # else just do this
                     else:
                         try:
                             self.a_dict[key][0] += sig_val
@@ -71,12 +79,15 @@ class SI:
                         except KeyError:
                             self.a_dict.update({key: [sig_val, co_val, 0]})
 
+        # If no sig_cutoff is specified
         elif sig_cutoff is not None:
             otu_1s = matrix_dict['sig_mat'].index
             otu_2s = matrix_dict['sig_mat'].columns
             for i in range(len(matrix_dict['sig_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
-                    key = otu_1s[i] + '<->' + otu_2s[j]
+                    sorted_otus = [otu_1s[i], otu_2s[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
                     if matrix_dict['corr_mat'] is not None:
                         co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
                     else:
@@ -96,12 +107,15 @@ class SI:
                         except KeyError:
                             self.a_dict.update({key: [sig_val, co_val, 0]})
 
+        # if no corr_cutoff is specified
         elif corr_cutoff is not None:
             otu_1s = matrix_dict['corr_mat'].index
             otu_2s = matrix_dict['corr_mat'].columns
             for i in range(len(matrix_dict['corr_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
-                    key = otu_1s[i] + '<->' + otu_2s[j]
+                    sorted_otus = [otu_1s[i], otu_2s[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
                     if matrix_dict['sig_mat'] is not None:
                         sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
                     else:
@@ -129,9 +143,8 @@ class SI:
         html_folder = os.path.join(output_dir, 'html')
         os.mkdir(html_folder)
 
-        # lists
+        # list for index and columns
         row_col_list = []
-        val_list = []
         # Make dict to make html file
         html_dict = {}
         for key, val in self.a_dict.items():
@@ -139,6 +152,7 @@ class SI:
             if val[2] >= frequency:
                 html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
                 OTUs = key.split('<->')
+                # add otu's to row_col_list
                 if OTUs[0] not in row_col_list:
                     row_col_list.append(OTUs[0])
                 if OTUs[1] not in row_col_list:
@@ -198,81 +212,3 @@ class SI:
             'sig_df': self.sig_df,
             'freq_df': self.freq_df
         }
-
-
-"""class SIintersect:
-    ''' Finds the intersection of significant interactions '''
-
-    def __init__(self, token, callback_url, scratch):
-        self.token = token
-        self.callback_url = callback_url
-        self.scratch = scratch
-        self.each_intersect_dict = {}
-
-    # Returns Significance Matrix pd.DataFrame(): get_pd_matrix(MatrixId)
-    def get_pd_matrix(self, MatrixId):
-
-        dfu = DataFileUtil(self.callback_url)
-        obj = dfu.get_objects({'object_refs': [MatrixId]})
-
-        sig = obj['data'][0]['data']['significance_data']
-        sig_rows = sig['row_ids']
-        sig_cols = sig['col_ids']
-        sig_vals = sig['values']
-
-        mat = pd.DataFrame(index=sig_rows, columns=sig_cols)
-        for i in range(len(mat.index)):
-            mat.iloc[i] = sig_vals[i]
-        return mat
-
-    # Returns dictionary of significant interactions based on cutoff: get_significant_dict(matrix, cutoff=0.7)
-    def get_significant_dict(self, matrix, cutoff=0.7):
-        otu_1s = matrix.index
-        otu_2s = matrix.columns
-        the_dict = {}
-        for i in range(len(matrix.index)):
-            for j in range(i + 1, len(matrix.index)):
-                key = otu_1s[i] + '<->' + otu_2s[j]
-                val = matrix.iloc[i][j]
-                if val >= cutoff:
-                    try:
-                        the_dict[key] += val
-                    except KeyError:
-                        the_dict.update({key: val})
-        return the_dict
-
-    # Returns dictionary of elements that intersect: get_intersection_dict(dict1={}, dict2={})
-    def get_intersection_dict(self, dict1, dict2):
-        intersection_dict = {}
-
-        for key, val in dict2.items():
-            if key in dict1.keys():
-                intersection_dict.update({key: val + dict1[key]})
-        return intersection_dict
-
-    # Make dictionary of dictionaries of each intersection comparing neighboring matrix--(1,2), (2,3), ..., (n,1).
-    def get_dict_of_each(self, MatrixIds, cutoff):
-        key1 = MatrixIds[-1]
-        m1 = self.get_pd_matrix(MatrixId=MatrixIds[-1])
-        dict1 = self.get_significant_dict(matrix=m1, cutoff=cutoff)
-        for i in range(len(MatrixIds)):
-            key2 = MatrixIds[i]
-            m2 = self.get_pd_matrix(MatrixId=MatrixIds[i])
-            dict2 = self.get_significant_dict(matrix=m2, cutoff=cutoff)
-            the_dict = self.get_intersection_dict(dict1=dict1, dict2=dict2)
-            self.each_intersect_dict.update({key1 + '<->' + key2: the_dict})
-            key1 = key2
-            dict1 = dict2
-        return self.each_intersect_dict
-
-    # run
-    def run(self, MatrixIds, cutoff):
-        m = self.get_pd_matrix(MatrixIds[0])
-        main_dict = self.get_significant_dict(m, cutoff)
-        for Id in MatrixIds[1:]:
-            m = self.get_pd_matrix(Id)
-            dict2 = self.get_significant_dict(m, cutoff)
-            main_dict = self.get_intersection_dict(dict1=main_dict, dict2=dict2)
-        for key, val in main_dict.items():
-            main_dict[key] = val / len(MatrixIds)
-        return main_dict"""
