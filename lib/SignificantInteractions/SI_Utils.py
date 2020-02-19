@@ -55,7 +55,7 @@ class SI:
             otu_2s = matrix_dict['sig_mat'].columns
             # Go through half of matrix since keys/values repeat, keys just in reverse
             for i in range(len(matrix_dict['sig_mat'].index)):
-                for j in range(i, len(matrix_dict['sig_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
                     # Get otu's for key and then sort to cover both possibilities
                     # so won't be seperate when pushing into dict
                     sorted_otus = [otu_1s[i], otu_2s[j]]
@@ -84,7 +84,7 @@ class SI:
             otu_1s = matrix_dict['sig_mat'].index
             otu_2s = matrix_dict['sig_mat'].columns
             for i in range(len(matrix_dict['sig_mat'].index)):
-                for j in range(i, len(matrix_dict['sig_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
                     sorted_otus = [otu_1s[i], otu_2s[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
@@ -112,7 +112,7 @@ class SI:
             otu_1s = matrix_dict['corr_mat'].index
             otu_2s = matrix_dict['corr_mat'].columns
             for i in range(len(matrix_dict['corr_mat'].index)):
-                for j in range(i, len(matrix_dict['corr_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
                     sorted_otus = [otu_1s[i], otu_2s[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
