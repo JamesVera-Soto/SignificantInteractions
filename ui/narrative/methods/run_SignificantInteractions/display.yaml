@@ -4,7 +4,7 @@
 name: SignificantInteractions
 
 tooltip: |
-    Finds intersection of significant interactions of multiple matrices.
+    Finds interactions within given correlation, significance, and frequency criteria.
 
 screenshots: []
 
