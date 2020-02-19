@@ -64,7 +64,6 @@
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "corr_matrix_name" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "string"
