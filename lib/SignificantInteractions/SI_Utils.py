@@ -40,7 +40,7 @@ class SI:
         return [sig_mat, co_mat]
 
     #
-    def push_to_dict(self, sig_matrix, co_matrix, cutoff):
+    def push_to_dict(self, sig_matrix, co_matrix, sig_cutoff, corr_cutoff):
         otu_1s = sig_matrix.index
         otu_2s = sig_matrix.columns
         for i in range(len(sig_matrix.index)):
@@ -48,7 +48,7 @@ class SI:
                 key = otu_1s[i] + '<->' + otu_2s[j]
                 sig_val = sig_matrix.iloc[i][j]
                 co_val = co_matrix[otu_1s[i]][otu_2s[j]]
-                if sig_val >= cutoff:
+                if sig_val < sig_cutoff and co_val > corr_cutoff:
                     try:
                         self.a_dict[key][0] += sig_val
                         self.a_dict[key][1] += co_val
@@ -125,10 +125,10 @@ class SI:
                                 'label': 'html files',
                                 'description': "desc"})
 
-    def run(self, MatrixIds, cutoff, frequency):
+    def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
         for Id in MatrixIds:
             mats = self.get_pd_matrix(MatrixId=Id)
-            self.push_to_dict(sig_matrix=mats[0], co_matrix=mats[1], cutoff=cutoff)
+            self.push_to_dict(sig_matrix=mats[0], co_matrix=mats[1], sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
         self.to_html(frequency=frequency, quantity=len(MatrixIds))
         return {
             'html_paths': self.html_paths,

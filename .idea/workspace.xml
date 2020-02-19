@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignificantInteractions.spec" beforeDir="false" afterPath="$PROJECT_DIR$/SignificantInteractions.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +91,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582067644571</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="test criteria for html_dict and DataFrame">
+      <created>1582068954602</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1582068954602</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -96,13 +108,14 @@
     <MESSAGE value="KBaseExperiments.CorrelationMatrix valid_ws_types" />
     <MESSAGE value="correlation values" />
     <MESSAGE value="create corrMatrix obj" />
-    <option name="LAST_COMMIT_MESSAGE" value="create corrMatrix obj" />
+    <MESSAGE value="test criteria for html_dict and DataFrame" />
+    <option name="LAST_COMMIT_MESSAGE" value="test criteria for html_dict and DataFrame" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582067644264">
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582068954138">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582067644264" />
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582068954138" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="508" y="78" key="SettingsEditor" timestamp="1582066400160">
       <screen x="67" y="27" width="1613" height="1023" />

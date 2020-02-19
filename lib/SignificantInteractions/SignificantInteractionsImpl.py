@@ -114,12 +114,13 @@ class SignificantInteractions:
         #BEGIN run_SignificantInteractions
 
         MatrixIds = params.get('MatrixIds')
-        cutoff = params.get('cutoff')
+        sig_cutoff = params.get('sig_cutoff')
+        corr_cutoff = params.get('corr_cutoff')
         frequency = params.get('frequency')
         corr_matrix_name = params.get('corr_matrix_name')
 
         si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
-        si_dict = si.run(MatrixIds=MatrixIds, cutoff=cutoff, frequency=frequency)
+        si_dict = si.run(MatrixIds=MatrixIds, sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff, frequency=frequency)
 
         corr_matrix_obj_ref = self._save_corr_matrix(workspace_name=params['workspace_name'],
                                                      corr_matrix_name=corr_matrix_name,

@@ -22,11 +22,24 @@
             }
         },
         {
-            "id": "cutoff",
-            "optional": false,
+            "id": "sig_cutoff",
+            "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "0.7" ],
+            "default_values": [ "2.0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0.0,
+                "max_float" : 1.0
+            }
+        },
+        {
+            "id": "corr_cutoff",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "-2.0" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "float",
@@ -36,10 +49,10 @@
         },
         {
             "id": "frequency",
-            "optional": false,
+            "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "1" ],
+            "default_values": [ "0" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "int",
@@ -74,8 +87,12 @@
                     "target_type_transform": "resolved-ref"
                 },
                 {
-                    "input_parameter" : "cutoff",
-                    "target_property" : "cutoff"
+                    "input_parameter" : "sig_cutoff",
+                    "target_property" : "sig_cutoff"
+                },
+                {
+                    "input_parameter" : "corr_cutoff",
+                    "target_property" : "corr_cutoff"
                 },
                 {
                     "input_parameter" : "frequency",
