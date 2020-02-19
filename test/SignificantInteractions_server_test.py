@@ -65,5 +65,8 @@ class SignificantInteractionsTest(unittest.TestCase):
         # self.assertEqual(ret[...], ...) or other unittest methods
         ret = self.serviceImpl.run_SignificantInteractions(self.ctx, {'MatrixIds': ['38056/12/1', '38056/11/1',
                                                                                     '38056/13/1'],
+                                                                      'sig_cutoff': 0.05,
+                                                                      'corr_cutoff': 0.5,
+                                                                      'frequency': 2,
                                                                       'corr_matrix_name': "testingMatrix",
                                                                       'workspace_name': self.wsName})

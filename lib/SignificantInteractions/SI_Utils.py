@@ -52,8 +52,10 @@ class SI:
             otu_2s = matrix_dict['sig_mat'].columns
             for i in range(len(matrix_dict['sig_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
-                    key = otu_1s[i] + '<->' + otu_2s[j]
-                    sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                    otu_to_sort = [otu_1s[i], otu_2s[j]]
+                    otu_to_sort.sort()
+                    key = otu_to_sort[0] + '<->' + otu_to_sort[1]
+                    sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
                     co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
                     if sig_val <= sig_cutoff and co_val >= corr_cutoff:
                         try:
@@ -76,10 +78,10 @@ class SI:
                 for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
                     key = otu_1s[i] + '<->' + otu_2s[j]
                     if matrix_dict['corr_mat'] is not None:
-                        co_val = matrix_dict['corr_mat'].iloc[i][j]
+                        co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
                     else:
                         co_val = 0
-                    sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                    sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
                     if sig_val <= sig_cutoff:
                         try:
                             self.a_dict[key][0] += sig_val
@@ -101,7 +103,7 @@ class SI:
                 for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
                     key = otu_1s[i] + '<->' + otu_2s[j]
                     if matrix_dict['sig_mat'] is not None:
-                        sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                        sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
                     else:
                         sig_val = 0
                     co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
