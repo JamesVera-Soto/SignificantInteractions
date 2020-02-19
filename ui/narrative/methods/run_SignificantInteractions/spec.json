@@ -23,10 +23,10 @@
         },
         {
             "id": "sig_cutoff",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "2.0" ],
+            "default_values": [ "1.0" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "float",
@@ -36,20 +36,20 @@
         },
         {
             "id": "corr_cutoff",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "-2.0" ],
+            "default_values": [ "-1.0" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "float",
-                "min_float" : 0.0,
+                "min_float" : -1.0,
                 "max_float" : 1.0
             }
         },
         {
             "id": "frequency",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "0" ],

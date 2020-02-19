@@ -55,7 +55,7 @@ class SignificantInteractions:
 
         return matrix_data
 
-    def _save_corr_matrix(self, workspace_name, corr_matrix_name, corr_df, sig_df, matrix_ref=None):
+    def _save_corr_matrix(self, workspace_name, corr_matrix_name, corr_df, freq_df, sig_df, matrix_ref=None):
         """
         _save_corr_matrix: save
         KBaseExperiments.CorrelationMatrix
@@ -74,6 +74,9 @@ class SignificantInteractions:
 
         if sig_df is not None:
             corr_data.update({'significance_data': self._df_to_list(sig_df)})
+
+        if freq_df is not None:
+            corr_data.update({'frequency_data': self._df_to_list(freq_df)})
 
         obj_type = 'KBaseExperiments.CorrelationMatrix'
         info = self.dfu.save_objects({
@@ -124,7 +127,8 @@ class SignificantInteractions:
 
         corr_matrix_obj_ref = self._save_corr_matrix(workspace_name=params['workspace_name'],
                                                      corr_matrix_name=corr_matrix_name,
-                                                     corr_df=si_dict['corr_df'], sig_df=si_dict['sig_df'])
+                                                     corr_df=si_dict['corr_df'], sig_df=si_dict['sig_df'],
+                                                     freq_df=si_dict['freq_df'], matrix_ref=MatrixIds)
 
         report_client = KBaseReport(self.callback_url, token=self.token)
         report_name = "Significant_Interaction_Intersect_" + str(uuid.uuid4())

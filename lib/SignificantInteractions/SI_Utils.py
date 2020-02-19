@@ -16,6 +16,7 @@ class SI:
         self.html_paths = []
         self.corr_df = None
         self.sig_df = None
+        self.freq_df = None
         self.dfu = DataFileUtil(self.callback_url)
 
     # Returns Significance Matrix pd.DataFrame(): get_pd_matrix(MatrixId)
@@ -48,7 +49,7 @@ class SI:
                 key = otu_1s[i] + '<->' + otu_2s[j]
                 sig_val = sig_matrix.iloc[i][j]
                 co_val = co_matrix[otu_1s[i]][otu_2s[j]]
-                if sig_val < sig_cutoff and co_val > corr_cutoff:
+                if sig_val <= sig_cutoff and co_val >= corr_cutoff:
                     try:
                         self.a_dict[key][0] += sig_val
                         self.a_dict[key][1] += co_val
@@ -89,6 +90,7 @@ class SI:
         # pandas DataFrame
         self.corr_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         self.sig_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
+        self.freq_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         # Make html_str out of html_dict
         html_str = "<html>" \
                    "<body>" \
@@ -103,6 +105,8 @@ class SI:
             self.corr_df[OTUs[1]][OTUs[0]] = val[1]
             self.sig_df[OTUs[0]][OTUs[1]] = val[0]
             self.sig_df[OTUs[1]][OTUs[0]] = val[0]
+            self.freq_df[OTUs[0]][OTUs[1]] = val[2]
+            self.freq_df[OTUs[1]][OTUs[0]] = val[2]
             # html part
             html_str += "<tr>" \
                         "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td><td>" + str(round(val[1], 5)) \
@@ -133,7 +137,8 @@ class SI:
         return {
             'html_paths': self.html_paths,
             'corr_df': self.corr_df,
-            'sig_df': self.sig_df
+            'sig_df': self.sig_df,
+            'freq_df': self.freq_df
         }
 
 
