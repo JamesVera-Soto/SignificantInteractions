@@ -27,7 +27,7 @@ class SI:
         }
         obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
-        if corr_cutoff:
+        if obj['data'][0]['data']['coefficient_data']:
             co = obj['data'][0]['data']['coefficient_data']
             co_rows = co['row_ids']
             co_cols = co['col_ids']
@@ -35,7 +35,7 @@ class SI:
             co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
             returning_dict['corr_mat'] = co_mat
 
-        if sig_cutoff:
+        if obj['data'][0]['data']['significance_data']:
             sig = obj['data'][0]['data']['significance_data']
             sig_rows = sig['row_ids']
             sig_cols = sig['col_ids']
@@ -75,18 +75,24 @@ class SI:
             for i in range(len(matrix_dict['sig_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
                     key = otu_1s[i] + '<->' + otu_2s[j]
+                    if matrix_dict['corr_mat'] is not None:
+                        co_val = matrix_dict['corr_mat'].iloc[i][j]
+                    else:
+                        co_val = 0
                     sig_val = matrix_dict['sig_mat'].iloc[i][j]
                     if sig_val <= sig_cutoff:
                         try:
                             self.a_dict[key][0] += sig_val
+                            self.a_dict[key][1] += co_val
                             self.a_dict[key][2] += 1
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, 0, 1]})
+                            self.a_dict.update({key: [sig_val, co_val, 1]})
                     else:
                         try:
                             self.a_dict[key][0] += sig_val
+                            self.a_dict[key][1] += co_val
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, 0, 0]})
+                            self.a_dict.update({key: [sig_val, co_val, 0]})
 
         elif corr_cutoff is not None:
             otu_1s = matrix_dict['corr_mat'].index
@@ -94,18 +100,24 @@ class SI:
             for i in range(len(matrix_dict['corr_mat'].index)):
                 for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
                     key = otu_1s[i] + '<->' + otu_2s[j]
+                    if matrix_dict['sig_mat'] is not None:
+                        sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                    else:
+                        sig_val = 0
                     co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
                     if co_val >= corr_cutoff:
                         try:
+                            self.a_dict[key][0] += sig_val
                             self.a_dict[key][1] += co_val
                             self.a_dict[key][2] += 1
                         except KeyError:
-                            self.a_dict.update({key: [0, co_val, 1]})
+                            self.a_dict.update({key: [sig_val, co_val, 1]})
                     else:
                         try:
+                            self.a_dict[key][0] += sig_val
                             self.a_dict[key][1] += co_val
                         except KeyError:
-                            self.a_dict.update({key: [0, co_val, 0]})
+                            self.a_dict.update({key: [sig_val, co_val, 0]})
 
     def to_html(self, frequency, quantity):
         # set up directory in scratch
