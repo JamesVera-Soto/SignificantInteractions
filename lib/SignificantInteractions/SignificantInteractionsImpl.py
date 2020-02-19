@@ -120,6 +120,8 @@ class SignificantInteractions:
         sig_cutoff = params.get('sig_cutoff')
         corr_cutoff = params.get('corr_cutoff')
         frequency = params.get('frequency')
+        if frequency is None:
+            frequency = 0
         corr_matrix_name = params.get('corr_matrix_name')
 
         si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)

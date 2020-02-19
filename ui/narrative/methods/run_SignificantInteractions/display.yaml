@@ -30,23 +30,23 @@ parameters :
         short-hint : |
             Add CorrelationMatrix's here
         long-hint  : |
-            Enter long-hint here.
+            Add CorrelationMatrix's here.
 
     sig_cutoff :
         ui-name: |
             Significance Cutoff
         short-hint: |
-            Frequency is counted when significance is less than cutoff.
+            Frequency is counted when significance is less than or equal to cutoff.
         long-hint: |
-            Enter long-hint here.
+            Frequency is counted when significance is less than or equal to cutoff.
 
     corr_cutoff:
         ui-name: |
             Correlation Cutoff
         short-hint: |
-            Frequency is counted when correlation is greater than cutoff.
+            Frequency is counted when correlation is greater than or equal to cutoff.
         long-hint: |
-            Enter long-hint here.
+            Frequency is counted when correlation is greater than or equal to cutoff.
 
     frequency:
         ui-name: |
@@ -54,7 +54,7 @@ parameters :
         short-hint: |
             Number of matrices where OTU1<->OTU2 interaction is found significant
         long-hint: |
-            Enter long-hint here.
+            Number of matrices where OTU1<->OTU2 interaction falls within the given cutoffs.
 
     corr_matrix_name:
         ui-name: |
@@ -62,7 +62,7 @@ parameters :
         short-hint: |
             Name of CorrelationMatrix that will be created
         long-hint: |
-            Enter long-hint here.
+            Name of CorrelationMatrix that will be created.
 
 description : |
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar efficitur felis, quis tincidunt sem congue at. Vivamus ornare feugiat faucibus. Fusce tincidunt mattis nunc, nec varius purus convallis quis. Nulla facilisi. In at magna dolor. Suspendisse sit amet felis at arcu auctor dapibus vitae pharetra dui. Nam semper mi quis tortor fermentum mollis. Donec a arcu pharetra, rutrum dolor vitae, rutrum mauris. Donec ornare fringilla sagittis. Nam laoreet est in elementum malesuada. Vestibulum id mi eget urna hendrerit feugiat. Donec et ultrices nulla. Phasellus diam eros, dapibus at tempus nec, semper vel ante.</p>

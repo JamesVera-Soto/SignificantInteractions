@@ -23,7 +23,7 @@
         },
         {
             "id": "sig_cutoff",
-            "optional": false,
+            "optional": true,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "1.0" ],
@@ -36,7 +36,7 @@
         },
         {
             "id": "corr_cutoff",
-            "optional": false,
+            "optional": true,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "-1.0" ],
@@ -49,7 +49,7 @@
         },
         {
             "id": "frequency",
-            "optional": false,
+            "optional": true,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "0" ],

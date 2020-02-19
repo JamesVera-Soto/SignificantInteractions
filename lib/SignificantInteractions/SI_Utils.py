@@ -19,49 +19,93 @@ class SI:
         self.freq_df = None
         self.dfu = DataFileUtil(self.callback_url)
 
-    # Returns Significance Matrix pd.DataFrame(): get_pd_matrix(MatrixId)
-    def get_pd_matrix(self, MatrixId):
-
+    # Returns Correlation and Significance Matrix pd.DataFrame()
+    def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
+        returning_dict = {
+            'corr_mat': None,
+            'sig_mat': None
+        }
         obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
-        co = obj['data'][0]['data']['coefficient_data']
-        co_rows = co['row_ids']
-        co_cols = co['col_ids']
-        co_vals = co['values']
+        if corr_cutoff:
+            co = obj['data'][0]['data']['coefficient_data']
+            co_rows = co['row_ids']
+            co_cols = co['col_ids']
+            co_vals = co['values']
+            co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
+            returning_dict['corr_mat'] = co_mat
 
-        co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
+        if sig_cutoff:
+            sig = obj['data'][0]['data']['significance_data']
+            sig_rows = sig['row_ids']
+            sig_cols = sig['col_ids']
+            sig_vals = sig['values']
+            sig_mat = pd.DataFrame(sig_vals, index=sig_rows, columns=sig_cols)
+            returning_dict['sig_mat'] = sig_mat
 
-        sig = obj['data'][0]['data']['significance_data']
-        sig_rows = sig['row_ids']
-        sig_cols = sig['col_ids']
-        sig_vals = sig['values']
-
-        sig_mat = pd.DataFrame(sig_vals, index=sig_rows, columns=sig_cols)
-
-        return [sig_mat, co_mat]
+        return returning_dict
 
     #
-    def push_to_dict(self, sig_matrix, co_matrix, sig_cutoff, corr_cutoff):
-        otu_1s = sig_matrix.index
-        otu_2s = sig_matrix.columns
-        for i in range(len(sig_matrix.index)):
-            for j in range(i + 1, len(sig_matrix.index)):
-                key = otu_1s[i] + '<->' + otu_2s[j]
-                sig_val = sig_matrix.iloc[i][j]
-                co_val = co_matrix[otu_1s[i]][otu_2s[j]]
-                if sig_val <= sig_cutoff and co_val >= corr_cutoff:
-                    try:
-                        self.a_dict[key][0] += sig_val
-                        self.a_dict[key][1] += co_val
-                        self.a_dict[key][2] += 1
-                    except KeyError:
-                        self.a_dict.update({key: [sig_val, co_val, 1]})
-                else:
-                    try:
-                        self.a_dict[key][0] += sig_val
-                        self.a_dict[key][1] += co_val
-                    except KeyError:
-                        self.a_dict.update({key: [sig_val, co_val, 0]})
+    def push_to_dict(self, matrix_dict, sig_cutoff, corr_cutoff):
+        if sig_cutoff is not None and corr_cutoff is not None:
+            otu_1s = matrix_dict['sig_mat'].index
+            otu_2s = matrix_dict['sig_mat'].columns
+            for i in range(len(matrix_dict['sig_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
+                    key = otu_1s[i] + '<->' + otu_2s[j]
+                    sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                    co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
+                    if sig_val <= sig_cutoff and co_val >= corr_cutoff:
+                        try:
+                            self.a_dict[key][0] += sig_val
+                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [sig_val, co_val, 1]})
+                    else:
+                        try:
+                            self.a_dict[key][0] += sig_val
+                            self.a_dict[key][1] += co_val
+                        except KeyError:
+                            self.a_dict.update({key: [sig_val, co_val, 0]})
+
+        elif sig_cutoff is not None:
+            otu_1s = matrix_dict['sig_mat'].index
+            otu_2s = matrix_dict['sig_mat'].columns
+            for i in range(len(matrix_dict['sig_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
+                    key = otu_1s[i] + '<->' + otu_2s[j]
+                    sig_val = matrix_dict['sig_mat'].iloc[i][j]
+                    if sig_val <= sig_cutoff:
+                        try:
+                            self.a_dict[key][0] += sig_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [sig_val, 0, 1]})
+                    else:
+                        try:
+                            self.a_dict[key][0] += sig_val
+                        except KeyError:
+                            self.a_dict.update({key: [sig_val, 0, 0]})
+
+        elif corr_cutoff is not None:
+            otu_1s = matrix_dict['corr_mat'].index
+            otu_2s = matrix_dict['corr_mat'].columns
+            for i in range(len(matrix_dict['corr_mat'].index)):
+                for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
+                    key = otu_1s[i] + '<->' + otu_2s[j]
+                    co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
+                    if co_val >= corr_cutoff:
+                        try:
+                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [0, co_val, 1]})
+                    else:
+                        try:
+                            self.a_dict[key][1] += co_val
+                        except KeyError:
+                            self.a_dict.update({key: [0, co_val, 0]})
 
     def to_html(self, frequency, quantity):
         # set up directory in scratch
@@ -131,8 +175,8 @@ class SI:
 
     def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
         for Id in MatrixIds:
-            mats = self.get_pd_matrix(MatrixId=Id)
-            self.push_to_dict(sig_matrix=mats[0], co_matrix=mats[1], sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+            mats = self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self.push_to_dict(matrix_dict=mats, sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
         self.to_html(frequency=frequency, quantity=len(MatrixIds))
         return {
             'html_paths': self.html_paths,
