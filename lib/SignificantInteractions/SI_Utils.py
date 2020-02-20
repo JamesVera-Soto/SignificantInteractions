@@ -18,6 +18,8 @@ class SI:
         self.sig_df = None
         self.freq_df = None
         self.dfu = DataFileUtil(self.callback_url)
+        self.sig_cutoff = None
+        self.corr_cutoff = None
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
     def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
@@ -29,22 +31,30 @@ class SI:
         obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
         # If 'coefficient_data' exist
-        if obj['data'][0]['data']['coefficient_data']:
+        try:
+            obj['data'][0]['data']['coefficient_data']
             co = obj['data'][0]['data']['coefficient_data']
             co_rows = co['row_ids']
             co_cols = co['col_ids']
             co_vals = co['values']
             co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
             returning_dict['corr_mat'] = co_mat
+            self.corr_cutoff = corr_cutoff
+        except KeyError:
+            pass
 
         # If 'significant_data' exist
-        if obj['data'][0]['data']['significance_data']:
+        try:
+            obj['data'][0]['data']['significance_data']
             sig = obj['data'][0]['data']['significance_data']
             sig_rows = sig['row_ids']
             sig_cols = sig['col_ids']
             sig_vals = sig['values']
             sig_mat = pd.DataFrame(sig_vals, index=sig_rows, columns=sig_cols)
             returning_dict['sig_mat'] = sig_mat
+            self.sig_cutoff = sig_cutoff
+        except KeyError:
+            pass
 
         return returning_dict
 
@@ -204,7 +214,7 @@ class SI:
     def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
         for Id in MatrixIds:
             mats = self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-            self.push_to_dict(matrix_dict=mats, sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+            self.push_to_dict(matrix_dict=mats, sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
         self.to_html(frequency=frequency, quantity=len(MatrixIds))
         return {
             'html_paths': self.html_paths,
