@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="">
+    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="nvm undo range() change">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582152787317</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="nvm undo range() change">
+      <created>1582154067875</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1582154067875</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -168,13 +176,14 @@
     <MESSAGE value="key sort in push_to_dict" />
     <MESSAGE value="sort otu's for push to dictionary and comments" />
     <MESSAGE value="fixed range() in push_to_dict to include self" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed range() in push_to_dict to include self" />
+    <MESSAGE value="nvm undo range() change" />
+    <option name="LAST_COMMIT_MESSAGE" value="nvm undo range() change" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582152787105">
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582224735333">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582152787105" />
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582224735333" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="508" y="78" key="SettingsEditor" timestamp="1582066400160">
       <screen x="67" y="27" width="1613" height="1023" />
