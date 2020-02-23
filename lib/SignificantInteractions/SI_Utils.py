@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os
 import uuid
 from installed_clients.WorkspaceClient import Workspace as Workspace
@@ -12,7 +13,7 @@ class SI:
         self.token = token
         self.callback_url = callback_url
         self.scratch = scratch
-        self.a_dict = {}  # values are list in form [sig_val, corr_val, frequency]
+        self.a_dict = {}  # values are list in form [corr_val, sig_val, frequency]
         self.html_paths = []
         self.corr_df = None
         self.sig_df = None
@@ -20,130 +21,126 @@ class SI:
         self.dfu = DataFileUtil(self.callback_url)
         self.sig_cutoff = None
         self.corr_cutoff = None
+        # Object info
+        self.obj = None
+        self.sig_rows = None
+        self.sig_cols = None
+        self.sig_vals = None
+        self.corr_rows = None
+        self.corr_cols = None
+        self.corr_vals = None
+        # Error / Warning vars
+        self.collision = False
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
     def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
-        # Initialize dictionary to be returned
-        returning_dict = {
-            'corr_mat': None,
-            'sig_mat': None
-        }
-        obj = self.dfu.get_objects({'object_refs': [MatrixId]})
+
+        self.obj = self.dfu.get_objects({'object_refs': [MatrixId]})
 
         # If 'coefficient_data' exist
         try:
-            obj['data'][0]['data']['coefficient_data']
-            co = obj['data'][0]['data']['coefficient_data']
-            co_rows = co['row_ids']
-            co_cols = co['col_ids']
-            co_vals = co['values']
-            co_mat = pd.DataFrame(co_vals, index=co_rows, columns=co_cols)
-            returning_dict['corr_mat'] = co_mat
+            corr = self.obj['data'][0]['data']['coefficient_data']
+            self.corr_rows = corr['row_ids']
+            self.corr_cols = corr['col_ids']
+            self.corr_vals = corr['values']
             self.corr_cutoff = corr_cutoff
         except KeyError:
             pass
 
         # If 'significant_data' exist
         try:
-            obj['data'][0]['data']['significance_data']
-            sig = obj['data'][0]['data']['significance_data']
-            sig_rows = sig['row_ids']
-            sig_cols = sig['col_ids']
-            sig_vals = sig['values']
-            sig_mat = pd.DataFrame(sig_vals, index=sig_rows, columns=sig_cols)
-            returning_dict['sig_mat'] = sig_mat
+            sig = self.obj['data'][0]['data']['significance_data']
+            self.sig_rows = sig['row_ids']
+            self.sig_cols = sig['col_ids']
+            self.sig_vals = sig['values']
             self.sig_cutoff = sig_cutoff
         except KeyError:
             pass
 
-        return returning_dict
-
     # Push matrix keys(index<->column) and values into dictionary
-    def push_to_dict(self, matrix_dict, sig_cutoff, corr_cutoff):
+    def push_to_dict(self, sig_cutoff, corr_cutoff):
+        length = len(self.corr_rows)
+        # If both sig_data and corr_data are used
         if sig_cutoff is not None and corr_cutoff is not None:
-            otu_1s = matrix_dict['sig_mat'].index
-            otu_2s = matrix_dict['sig_mat'].columns
             # Go through half of matrix since keys/values repeat, keys just in reverse
-            for i in range(len(matrix_dict['sig_mat'].index)):
-                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
+            for i in range(length):
+                for j in range(i + 1, length):
                     # Get otu's for key and then sort to cover both possibilities
                     # so won't be seperate when pushing into dict
-                    sorted_otus = [otu_1s[i], otu_2s[j]]
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
-                    sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
-                    co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
+                    sig_val = self.sig_vals[i][j]
+                    corr_val = self.corr_vals[i][j]
                     # Increment frequency if
-                    if sig_val <= sig_cutoff and co_val >= corr_cutoff:
+                    if sig_val <= sig_cutoff and corr_val >= corr_cutoff:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                             self.a_dict[key][2] += 1
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 1]})
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
                     # else just do this
                     else:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 0]})
+                            self.a_dict.update({key: [corr_val, sig_val, 0]})
 
-        # If no sig_cutoff is specified
+        # If no corr_cutoff is specified but sig_cutoff is; or corr_matrix doesn't exit
         elif sig_cutoff is not None:
-            otu_1s = matrix_dict['sig_mat'].index
-            otu_2s = matrix_dict['sig_mat'].columns
-            for i in range(len(matrix_dict['sig_mat'].index)):
-                for j in range(i + 1, len(matrix_dict['sig_mat'].index)):
-                    sorted_otus = [otu_1s[i], otu_2s[j]]
+            for i in range(length):
+                for j in range(i + 1, length):
+                    sorted_otus = [self.sig_rows[i], self.sig_cols[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
-                    if matrix_dict['corr_mat'] is not None:
-                        co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
+                    if self.corr_cutoff is not None:
+                        corr_val = self.corr_vals[i][j]
                     else:
-                        co_val = 0
-                    sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
+                        corr_val = 0
+                    sig_val = self.sig_vals[i][j]
                     if sig_val <= sig_cutoff:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                             self.a_dict[key][2] += 1
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 1]})
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
                     else:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 0]})
+                            self.a_dict.update({key: [corr_val, sig_val, 0]})
 
-        # if no corr_cutoff is specified
+        # if no sig_cutoff is specified but corr_cutoff is; or sig_matrix doesn't exist
         elif corr_cutoff is not None:
-            otu_1s = matrix_dict['corr_mat'].index
-            otu_2s = matrix_dict['corr_mat'].columns
-            for i in range(len(matrix_dict['corr_mat'].index)):
-                for j in range(i + 1, len(matrix_dict['corr_mat'].index)):
-                    sorted_otus = [otu_1s[i], otu_2s[j]]
+            for i in range(length):
+                if i % 1000 == 0:
+                    print(i)
+                for j in range(i + 1, length):
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
-                    if matrix_dict['sig_mat'] is not None:
-                        sig_val = matrix_dict['sig_mat'][otu_1s[i]][otu_2s[j]]
+                    if self.sig_cutoff is not None:
+                        sig_val = self.sig_vals[i][j]
                     else:
                         sig_val = 0
-                    co_val = matrix_dict['corr_mat'][otu_1s[i]][otu_2s[j]]
-                    if co_val >= corr_cutoff:
+                    corr_val = self.corr_vals[i][j]
+                    if corr_val >= corr_cutoff:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                             self.a_dict[key][2] += 1
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 1]})
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
                     else:
                         try:
-                            self.a_dict[key][0] += sig_val
-                            self.a_dict[key][1] += co_val
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
                         except KeyError:
-                            self.a_dict.update({key: [sig_val, co_val, 0]})
+                            self.a_dict.update({key: [corr_val, sig_val, 0]})
 
     def to_html(self, frequency, quantity):
         # set up directory in scratch
@@ -171,35 +168,46 @@ class SI:
         row_col_list.sort()
         # pandas DataFrame
         self.corr_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
-        self.sig_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
+        if self.sig_cutoff is not None:
+            self.sig_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         self.freq_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         # Make html_str out of html_dict
         html_str = "<html>" \
                    "<body>" \
                    '<table border="2">' \
                    "<tr>" \
-                   "<td>OTUs: </td><td>Average Significance: </td> <td>Average Correlation: </td> <td>Frequency:</td>" \
-                   "</tr>"
+                   "<td>OTUs: </td><td>Average Correlation: </td> "
+        if self.sig_cutoff is not None:
+            html_str += "<td>Average Significance: </td> "
+        html_str += "<td>Frequency:</td>" \
+                    "</tr>"
+        counter = 0
         for key, val in html_dict.items():
-            # Push values into df matrices
+            # the df part
             OTUs = key.split('<->')
             self.corr_df[OTUs[0]][OTUs[1]] = val[1]
             self.corr_df[OTUs[1]][OTUs[0]] = val[1]
-            self.sig_df[OTUs[0]][OTUs[1]] = val[0]
-            self.sig_df[OTUs[1]][OTUs[0]] = val[0]
+            if self.sig_cutoff is not None:
+                self.sig_df[OTUs[0]][OTUs[1]] = val[0]
+                self.sig_df[OTUs[1]][OTUs[0]] = val[0]
             self.freq_df[OTUs[0]][OTUs[1]] = val[2]
             self.freq_df[OTUs[1]][OTUs[0]] = val[2]
-            # html part
-            html_str += "<tr>" \
-                        "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td><td>" + str(round(val[1], 5)) \
-                        + "</td><td>" + str(val[2]) + " / " + str(quantity) + "</td>" \
-                            "</tr>"
+
+            # the html part
+            if counter <= 20000:
+                html_str += "<tr>" \
+                            "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td>"
+                if self.sig_cutoff is not None:
+                    html_str += "<td>" + str(round(val[1], 5)) + "</td>"
+                html_str += "<td>" + str(val[2]) + " / " + str(quantity) + "</td>" \
+                            + "</tr>"
+            counter += 1
         html_str += "</table>" \
                     "</body>" \
                     "</html>"
 
-        with open(os.path.join(html_folder, "index.html"), 'w') as index_file:
-            index_file.write(html_str)
+        index_file = open(os.path.join(html_folder, "index.html"), 'w')
+        index_file.write(html_str)
 
         # have needed files saved to folder before shock
         shock = self.dfu.file_to_shock({'file_path': html_folder,
@@ -213,8 +221,8 @@ class SI:
 
     def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
         for Id in MatrixIds:
-            mats = self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-            self.push_to_dict(matrix_dict=mats, sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
+            self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self.push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
         self.to_html(frequency=frequency, quantity=len(MatrixIds))
         return {
             'html_paths': self.html_paths,
