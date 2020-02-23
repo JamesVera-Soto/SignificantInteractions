@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="Beta: no pd in get,">
-      <change beforePath="$PROJECT_DIR$/.idea/SignificantInteractions.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SignificantInteractions.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
     </list>
@@ -172,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582237472411</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Beta: no pd in get, sig_df if not None">
+      <created>1582496161222</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1582496161222</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -194,17 +199,18 @@
     <MESSAGE value="nvm undo range() change" />
     <MESSAGE value="to Beta. Warning message for already in use name?" />
     <MESSAGE value="Beta: significance_data optional" />
-    <option name="LAST_COMMIT_MESSAGE" value="Beta: significance_data optional" />
+    <MESSAGE value="Beta: no pd in get, sig_df if not None" />
+    <option name="LAST_COMMIT_MESSAGE" value="Beta: no pd in get, sig_df if not None" />
   </component>
   <component name="WindowStateProjectService">
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582245464077">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1582245464077" />
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582494816481">
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582496160830">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582494816481" />
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582496160830" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="797" y="201" width="424" height="484" key="FileChooserDialogImpl" timestamp="1582495189382">
       <screen x="67" y="27" width="1613" height="1023" />

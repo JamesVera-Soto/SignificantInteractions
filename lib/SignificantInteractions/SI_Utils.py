@@ -206,8 +206,8 @@ class SI:
                     "</body>" \
                     "</html>"
 
-        index_file = open(os.path.join(html_folder, "index.html"), 'w')
-        index_file.write(html_str)
+        with open(os.path.join(html_folder, "index.html"), 'w') as index_file:
+            index_file.write(html_str)
 
         # have needed files saved to folder before shock
         shock = self.dfu.file_to_shock({'file_path': html_folder,
