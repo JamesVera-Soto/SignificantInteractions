@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import uuid
+import logging
 from installed_clients.WorkspaceClient import Workspace as Workspace
 from installed_clients.DataFIleUtilClient import DataFileUtil
 
@@ -59,11 +60,16 @@ class SI:
 
     # Push matrix keys(index<->column) and values into dictionary
     def push_to_dict(self, sig_cutoff, corr_cutoff):
+
+        logging.info('push_to_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
+
         length = len(self.corr_rows)
         # If both sig_data and corr_data are used
         if sig_cutoff is not None and corr_cutoff is not None:
             # Go through half of matrix since keys/values repeat, keys just in reverse
             for i in range(length):
+                if i % 1000 == 0:
+                    logging.info('updating... on row# ' + str(i))
                 for j in range(i + 1, length):
                     # Get otu's for key and then sort to cover both possibilities
                     # so won't be seperate when pushing into dict
@@ -92,6 +98,8 @@ class SI:
         elif sig_cutoff is not None:
             for i in range(length):
                 for j in range(i + 1, length):
+                    if i % 1000 == 0:
+                        logging.info('updating... on row# ' + str(i))
                     sorted_otus = [self.sig_rows[i], self.sig_cols[j]]
                     sorted_otus.sort()
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
@@ -118,7 +126,7 @@ class SI:
         elif corr_cutoff is not None:
             for i in range(length):
                 if i % 1000 == 0:
-                    print(i)
+                    logging.info('updating... on row# ' + str(i))
                 for j in range(i + 1, length):
                     sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
                     sorted_otus.sort()
@@ -141,8 +149,14 @@ class SI:
                             self.a_dict[key][1] += sig_val
                         except KeyError:
                             self.a_dict.update({key: [corr_val, sig_val, 0]})
+        else:
+            raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
+                             'significance data does not exist.')
 
     def to_html(self, frequency, quantity):
+
+        logging.info('to_html with frequency: {}, and quantity: {}'.format(frequency, quantity))
+
         # set up directory in scratch
         output_dir = os.path.join(self.scratch, str(uuid.uuid4()))
         os.mkdir(output_dir)
@@ -157,6 +171,7 @@ class SI:
         for key, val in self.a_dict.items():
             # test criteria for html_dict and DataFrame
             if val[2] >= frequency:
+                # Values and corr and sig are averages
                 html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
                 OTUs = key.split('<->')
                 # add otu's to row_col_list
@@ -220,10 +235,14 @@ class SI:
                                 'description': "desc"})
 
     def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
+        pos = 1
+        quantity = len(MatrixIds)
         for Id in MatrixIds:
+            logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
             self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
             self.push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
-        self.to_html(frequency=frequency, quantity=len(MatrixIds))
+            pos += 1
+        self.to_html(frequency=frequency, quantity=quantity)
         return {
             'html_paths': self.html_paths,
             'corr_df': self.corr_df,

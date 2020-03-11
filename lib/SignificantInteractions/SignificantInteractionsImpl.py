@@ -29,12 +29,12 @@ class SignificantInteractions:
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
-    def _df_to_list(self, df, threshold=None):
+    def _df_to_list(self, df, fillna_val = 0, threshold=None):
         """
         _df_to_list: convert Dataframe to FloatMatrix2D matrix data
         """
 
-        df.fillna(0, inplace=True)
+        df.fillna(fillna_val, inplace=True)
 
         if threshold:
             drop_cols = list()
@@ -73,7 +73,7 @@ class SignificantInteractions:
             corr_data.update({'original_matrix_ref': matrix_ref})
 
         if sig_df is not None:
-            corr_data.update({'significance_data': self._df_to_list(sig_df)})
+            corr_data.update({'significance_data': self._df_to_list(sig_df, 1)})
 
         if freq_df is not None:
             corr_data.update({'frequency_data': self._df_to_list(freq_df)})
@@ -120,6 +120,8 @@ class SignificantInteractions:
         sig_cutoff = params.get('sig_cutoff')
         corr_cutoff = params.get('corr_cutoff')
         frequency = params.get('frequency')
+        if sig_cutoff is None and corr_cutoff is None:
+            raise ValueError("ERROR: Both sig_cutoff and corr_cutoff are null. At least one is needed")
         if frequency is None:
             frequency = 0
         corr_matrix_name = params.get('corr_matrix_name')

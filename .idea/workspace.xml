@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="">
+    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="Beta: no pd in get, sig_df if not None">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582496161222</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Beta: no pd in get, sig_df if not None">
+      <created>1582497095731</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1582497095731</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -207,10 +215,11 @@
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1582245464077" />
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2" timestamp="1582496160830">
-      <screen x="67" y="27" width="1613" height="1023" />
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1583955323142">
+      <screen x="67" y="27" width="1853" height="1173" />
     </state>
-    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582496160830" />
+    <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582497110129" />
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1583955323142" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="797" y="201" width="424" height="484" key="FileChooserDialogImpl" timestamp="1582495189382">
       <screen x="67" y="27" width="1613" height="1023" />
