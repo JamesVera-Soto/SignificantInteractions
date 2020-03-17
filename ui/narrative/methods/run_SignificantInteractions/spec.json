@@ -142,7 +142,8 @@
                 },
                 {
                     "input_parameter": "matrix_unique_to",
-                    "target_property": "matrix_unique_to"
+                    "target_property": "matrix_unique_to",
+                    "target_type_transform": "resolved-ref"
                 },
                 {
                     "input_parameter" : "corr_matrix_name",
