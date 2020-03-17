@@ -376,7 +376,7 @@ class SI:
                 pass
             MatrixIds.insert(0, matrix_unique_to)
             frequency = 1
-            self.get_pd_matrix(MatrixId=MatrixIds[0], corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self.get_pd_matrix(MatrixId=matrix_unique_to, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
             self.push_to_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
             for Id in MatrixIds:
                 if Id == matrix_unique_to:

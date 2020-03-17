@@ -3,6 +3,7 @@
 import logging
 import os
 import uuid
+import json
 from SignificantInteractions.SI_Utils import SI
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.DataFIleUtilClient import DataFileUtil
@@ -115,6 +116,10 @@ class SignificantInteractions:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_SignificantInteractions
+
+        logging.info('--->\nrunning metaMDS with input\n' +
+                     'params:\n{}'.format(json.dumps(params, indent=1)))
+
         MatrixIds = params.get('MatrixIds')
         sig_cutoff = params.get('sig_cutoff')
         corr_cutoff = params.get('corr_cutoff')
