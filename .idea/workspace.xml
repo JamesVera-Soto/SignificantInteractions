@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="Beta: no pd in get, sig_df if not None">
+    <list default="true" id="d6eedb1b-e4d4-47de-abda-264d66ebac73" name="Default Changelist" comment="logging.info and sig output fillna to 1 and ERROR checking">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignificantInteractions.spec" beforeDir="false" afterPath="$PROJECT_DIR$/SignificantInteractions.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SI_Utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/SignificantInteractions_server_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +189,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582497095731</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="logging.info and sig output fillna to 1 and ERROR checking">
+      <created>1583958830798</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1583958830798</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -208,23 +219,25 @@
     <MESSAGE value="to Beta. Warning message for already in use name?" />
     <MESSAGE value="Beta: significance_data optional" />
     <MESSAGE value="Beta: no pd in get, sig_df if not None" />
-    <option name="LAST_COMMIT_MESSAGE" value="Beta: no pd in get, sig_df if not None" />
+    <MESSAGE value="logging.info and sig output fillna to 1 and ERROR checking" />
+    <option name="LAST_COMMIT_MESSAGE" value="logging.info and sig output fillna to 1 and ERROR checking" />
   </component>
   <component name="WindowStateProjectService">
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582245464077">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1582245464077" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1583955323142">
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1583977645465">
       <screen x="67" y="27" width="1853" height="1173" />
     </state>
     <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582497110129" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1583955323142" />
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1583977645465" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
-    <state x="797" y="201" width="424" height="484" key="FileChooserDialogImpl" timestamp="1582495189382">
-      <screen x="67" y="27" width="1613" height="1023" />
+    <state x="906" y="227" width="424" height="484" key="FileChooserDialogImpl" timestamp="1584467627183">
+      <screen x="67" y="27" width="1853" height="1173" />
     </state>
     <state x="797" y="201" width="424" height="484" key="FileChooserDialogImpl/67.27.1613.1023@67.27.1613.1023" timestamp="1582495189382" />
+    <state x="906" y="227" key="FileChooserDialogImpl/67.27.1853.1173@67.27.1853.1173" timestamp="1584467627183" />
     <state x="508" y="78" key="SettingsEditor" timestamp="1582495344325">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>

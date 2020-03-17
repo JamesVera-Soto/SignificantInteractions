@@ -30,8 +30,7 @@ class SI:
         self.corr_rows = None
         self.corr_cols = None
         self.corr_vals = None
-        # Error / Warning vars
-        self.collision = False
+        self.find_unique = False
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
     def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
@@ -153,6 +152,139 @@ class SI:
             raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
                              'significance data does not exist.')
 
+    def push_to_unique_dict(self, sig_cutoff, corr_cutoff):
+
+        logging.info('push_to_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
+
+        length = len(self.corr_rows)
+        # If both sig_data and corr_data are used
+        if sig_cutoff is not None and corr_cutoff is not None:
+            # Go through half of matrix since keys/values repeat, keys just in reverse
+            for i in range(length):
+                if i % 1000 == 0:
+                    logging.info('updating... on row# ' + str(i))
+                for j in range(i + 1, length):
+                    # Get otu's for key and then sort to cover both possibilities
+                    # so won't be seperate when pushing into dict
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    sig_val = self.sig_vals[i][j]
+                    corr_val = self.corr_vals[i][j]
+                    # Increment frequency if
+                    if sig_val <= sig_cutoff and corr_val >= corr_cutoff:
+                        try:
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
+
+        # If no corr_cutoff is specified but sig_cutoff is; or corr_matrix doesn't exit
+        elif sig_cutoff is not None:
+            for i in range(length):
+                for j in range(i + 1, length):
+                    if i % 1000 == 0:
+                        logging.info('updating... on row# ' + str(i))
+                    sorted_otus = [self.sig_rows[i], self.sig_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    if self.corr_cutoff is not None:
+                        corr_val = self.corr_vals[i][j]
+                    else:
+                        corr_val = 0
+                    sig_val = self.sig_vals[i][j]
+                    if sig_val <= sig_cutoff:
+                        try:
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
+
+        # if no sig_cutoff is specified but corr_cutoff is; or sig_matrix doesn't exist
+        elif corr_cutoff is not None:
+            for i in range(length):
+                if i % 1000 == 0:
+                    logging.info('updating... on row# ' + str(i))
+                for j in range(i + 1, length):
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    if self.sig_cutoff is not None:
+                        sig_val = self.sig_vals[i][j]
+                    else:
+                        sig_val = 0
+                    corr_val = self.corr_vals[i][j]
+                    if corr_val >= corr_cutoff:
+                        try:
+                            self.a_dict[key][0] += corr_val
+                            self.a_dict[key][1] += sig_val
+                            self.a_dict[key][2] += 1
+                        except KeyError:
+                            self.a_dict.update({key: [corr_val, sig_val, 1]})
+        else:
+            raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
+                             'significance data does not exist.')
+
+    def remove_from_unique_dict(self, sig_cutoff, corr_cutoff):
+
+        logging.info('remove_from_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff,
+                                                                                                sig_cutoff))
+
+        length = len(self.corr_rows)
+        # If both sig_data and corr_data are used
+        if sig_cutoff is not None and corr_cutoff is not None:
+            # Go through half of matrix since keys/values repeat, keys just in reverse
+            for i in range(length):
+                if i % 1000 == 0:
+                    logging.info('updating... on row# ' + str(i))
+                for j in range(i + 1, length):
+                    # Get otu's for key and then sort to cover both possibilities
+                    # so won't be seperate when pushing into dict
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    # Increment frequency if
+                    if self.sig_vals[i][j] <= sig_cutoff and self.corr_vals[i][j] >= corr_cutoff:
+                        try:
+                            del self.a_dict[key]
+                        except KeyError:
+                            pass
+
+        # If no corr_cutoff is specified but sig_cutoff is; or corr_matrix doesn't exit
+        elif sig_cutoff is not None:
+            for i in range(length):
+                for j in range(i + 1, length):
+                    if i % 1000 == 0:
+                        logging.info('updating... on row# ' + str(i))
+                    sorted_otus = [self.sig_rows[i], self.sig_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    if self.sig_vals[i][j] <= sig_cutoff:
+                        try:
+                            del self.a_dict[key]
+                        except KeyError:
+                            pass
+
+        # if no sig_cutoff is specified but corr_cutoff is; or sig_matrix doesn't exist
+        elif corr_cutoff is not None:
+            for i in range(length):
+                if i % 1000 == 0:
+                    logging.info('updating... on row# ' + str(i))
+                for j in range(i + 1, length):
+                    sorted_otus = [self.corr_rows[i], self.corr_cols[j]]
+                    sorted_otus.sort()
+                    key = sorted_otus[0] + '<->' + sorted_otus[1]
+                    if self.corr_vals[i][j] >= corr_cutoff:
+                        try:
+                            del self.a_dict[key]
+                        except KeyError:
+                            pass
+        else:
+            raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
+                             'significance data does not exist.')
+
     def to_html(self, frequency, quantity):
 
         logging.info('to_html with frequency: {}, and quantity: {}'.format(frequency, quantity))
@@ -234,14 +366,34 @@ class SI:
                                 'label': 'html files',
                                 'description': "desc"})
 
-    def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency):
+    def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency, search_for_type, matrix_unique_to):
         pos = 1
         quantity = len(MatrixIds)
-        for Id in MatrixIds:
-            logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
-            self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-            self.push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
-            pos += 1
+        if search_for_type == "unique":
+            try:
+                MatrixIds.remove(matrix_unique_to)
+            except ValueError:
+                pass
+            MatrixIds.insert(0, matrix_unique_to)
+            frequency = 1
+            self.get_pd_matrix(MatrixId=MatrixIds[0], corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self.push_to_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+            for Id in MatrixIds:
+                if Id == matrix_unique_to:
+                    continue
+                logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
+                self.get_pd_matrix(MatrixId=MatrixIds[0], corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+                self.remove_from_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+        if search_for_type == "union":
+            frequency = 1
+        if matrix_unique_to is not None:
+            self.find_unique = True
+        if search_for_type == "intersection" or search_for_type == "union":
+            for Id in MatrixIds:
+                logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
+                self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+                self.push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
+                pos += 1
         self.to_html(frequency=frequency, quantity=quantity)
         return {
             'html_paths': self.html_paths,

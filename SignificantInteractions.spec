@@ -8,6 +8,8 @@ module SignificantInteractions {
         float sig_cutoff;
         float corr_cutoff;
         int frequency;
+        string search_for_type;
+        string matrix_unique_to;
         string corr_matrix_name;
     } ReportResults;
 
