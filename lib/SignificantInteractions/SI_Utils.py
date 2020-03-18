@@ -376,6 +376,9 @@ class SI:
         pos = 1
         quantity = len(MatrixIds)
         if search_for_type == "unique":
+            if matrix_unique_to == None:
+                raise ValueError('"Unique" was chosen for "Search for" but a matrix was not specified in '
+                                 '"Unique To This Matrix"')
             try:
                 MatrixIds.remove(matrix_unique_to)
             except ValueError:
