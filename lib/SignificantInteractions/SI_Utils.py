@@ -173,6 +173,7 @@ class SI:
                     corr_val = self.corr_vals[i][j]
                     # Increment frequency if
                     if sig_val <= sig_cutoff and corr_val >= corr_cutoff:
+                        logging.info('pushing {} to dictionary'.format(key))
                         try:
                             self.a_dict[key][0] += corr_val
                             self.a_dict[key][1] += sig_val
@@ -247,6 +248,7 @@ class SI:
                     key = sorted_otus[0] + '<->' + sorted_otus[1]
                     # Increment frequency if
                     if self.sig_vals[i][j] <= sig_cutoff and self.corr_vals[i][j] >= corr_cutoff:
+                        logging.info('removing {} from dictionary'.format(key))
                         try:
                             del self.a_dict[key]
                         except KeyError:
@@ -303,6 +305,7 @@ class SI:
         for key, val in self.a_dict.items():
             # test criteria for html_dict and DataFrame
             if val[2] >= frequency:
+                logging.info('pushing {} to html_dictionary'.format(key))
                 # Values and corr and sig are averages
                 html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
                 OTUs = key.split('<->')
