@@ -151,7 +151,16 @@ class SignificantInteractions:
             'report_object_name': report_name,
             'workspace_name': params['workspace_name']
         })
+        output = {
+            'report_ref': report_info['ref'],
+            'report_name': report_info['name'],
+        }
+        #END run_SignificantInteractions
 
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_SignificantInteractions return value ' +
+                             'output is not type dict as required.')
         # return the results
         return [report_info]
     def status(self, ctx):
@@ -163,16 +172,3 @@ class SignificantInteractions:
                      'git_commit_hash': self.GIT_COMMIT_HASH}
         #END_STATUS
         return [returnVal]
-
-    """
-            output = {
-            'report_ref': report_info['ref'],
-            'report_name': report_info['name'],
-        }
-        #END run_SignificantInteractions
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method run_SignificantInteractions return value ' +
-                             'output is not type dict as required.')
-    """
