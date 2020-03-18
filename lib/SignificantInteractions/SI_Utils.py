@@ -328,10 +328,17 @@ class SI:
         html_str = "<html>" \
                    "<body>" \
                    '<table border="2">' \
-                   "<tr>" \
-                   "<td>OTUs: </td><td>Average Correlation: </td> "
+                   "<tr>"
+        if self.is_unique_search:
+            html_str += "<td>OTUs: </td><td>Correlation: </td> "
+        else:
+            html_str += "<td>OTUs: </td><td>Average Correlation: </td> "
+
         if self.sig_cutoff is not None:
-            html_str += "<td>Average Significance: </td> "
+            if self.is_unique_search:
+                html_str += "<td>Significance: </td> "
+            else:
+                html_str += "<td>Average Significance: </td> "
         html_str += "<td>Frequency:</td>" \
                     "</tr>"
         counter = 0
