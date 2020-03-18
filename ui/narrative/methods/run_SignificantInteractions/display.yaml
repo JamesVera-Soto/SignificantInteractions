@@ -62,17 +62,9 @@ parameters :
         short-hint: |
             Unique; Union; Intersect
         long-hint: |
-            Unique: Interactions that meet criteria for ONLY a particular matrix
+            Unique: Interactions that meet criteria for ONLY the FIRST matrix chosen
             Union: All interactions that meet criteria--frequency 1
             Intersect: Interactions that meet criteria including any given frequency
-
-    matrix_unique_to:
-        ui-name: |
-            Unique To This Matrix
-        short-hint: |
-            For unique
-        long-hint: |
-            For interactions that meet the criteria ONLY in this matrix
 
     corr_matrix_name:
         ui-name: |

@@ -125,7 +125,6 @@ class SignificantInteractions:
         corr_cutoff = params.get('corr_cutoff')
         frequency = params.get('frequency')
         search_for_type = params.get('search_for_type')
-        matrix_unique_to = params.get('matrix_unique_to')
         if sig_cutoff is None and corr_cutoff is None:
             raise ValueError("ERROR: Both sig_cutoff and corr_cutoff are null. At least one is needed")
         if frequency is None:
@@ -134,7 +133,7 @@ class SignificantInteractions:
 
         si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
         si_dict = si.run(MatrixIds=MatrixIds, sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff, frequency=frequency,
-                         search_for_type=search_for_type, matrix_unique_to=matrix_unique_to)
+                         search_for_type=search_for_type)
 
         corr_matrix_obj_ref = self._save_corr_matrix(workspace_name=params['workspace_name'],
                                                      corr_matrix_name=corr_matrix_name,

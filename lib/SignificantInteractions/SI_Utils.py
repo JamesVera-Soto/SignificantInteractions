@@ -379,25 +379,17 @@ class SI:
                                 'label': 'html files',
                                 'description': "desc"})
 
-    def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency, search_for_type, matrix_unique_to):
+    def run(self, MatrixIds, sig_cutoff, corr_cutoff, frequency, search_for_type):
         pos = 1
         quantity = len(MatrixIds)
         if search_for_type == "unique":
-            if matrix_unique_to == None:
-                raise ValueError('"Unique" was chosen for "Search for" but a matrix was not specified in '
-                                 '"Unique To This Matrix"')
-            try:
-                MatrixIds.remove(matrix_unique_to)
-            except ValueError:
-                pass
-            MatrixIds.insert(0, matrix_unique_to)
             frequency = 1
-            self.get_pd_matrix(MatrixId=matrix_unique_to, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self.get_pd_matrix(MatrixId=MatrixIds[0], corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
             self.push_to_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
             for Id in MatrixIds:
                 logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
                 pos += 1
-                if Id == matrix_unique_to:
+                if Id == MatrixIds[0]:
                     continue
                 self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
                 self.remove_from_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)

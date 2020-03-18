@@ -86,17 +86,6 @@
           }
         },
         {
-            "id": "matrix_unique_to",
-            "optional": true,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": "",
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": ["KBaseExperiments.CorrelationMatrix"]
-            }
-        },
-        {
             "id": "corr_matrix_name",
             "optional": false,
             "advanced": false,
