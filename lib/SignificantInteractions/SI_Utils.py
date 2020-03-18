@@ -30,7 +30,7 @@ class SI:
         self.corr_rows = None
         self.corr_cols = None
         self.corr_vals = None
-        self.find_unique = False
+        self.is_unique_search = False
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
     def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
@@ -158,6 +158,7 @@ class SI:
 
         logging.info('push_to_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
 
+        self.is_unique_search = True
         length = len(self.corr_rows)
         # If both sig_data and corr_data are used
         if sig_cutoff is not None and corr_cutoff is not None:
@@ -306,7 +307,10 @@ class SI:
             # test criteria for html_dict and DataFrame
             if val[2] >= frequency:
                 # Values and corr and sig are averages
-                html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
+                if self.is_unique_search:
+                    html_dict.update({key: [val[0], val[1], val[2]]})
+                else:
+                    html_dict.update({key: [val[0] / quantity, val[1] / quantity, val[2]]})
                 OTUs = key.split('<->')
                 # add otu's to row_col_list
                 if OTUs[0] not in row_col_list:
@@ -389,8 +393,6 @@ class SI:
                 self.remove_from_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
         if search_for_type == "union":
             frequency = 1
-        if matrix_unique_to is not None:
-            self.find_unique = True
         if search_for_type == "intersection" or search_for_type == "union":
             for Id in MatrixIds:
                 logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
