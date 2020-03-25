@@ -22,6 +22,17 @@
             }
         },
         {
+            "id": "matrix_unique_to",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": ["KBaseExperiments.CorrelationMatrix"]
+            }
+        },
+        {
             "id": "sig_cutoff",
             "optional": true,
             "advanced": false,
@@ -111,6 +122,11 @@
                 {
                     "input_parameter" : "MatrixIds",
                     "target_property" : "MatrixIds",
+                    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter" : "matrix_unique_to",
+                    "target_property" : "matrix_unique_to",
                     "target_type_transform": "resolved-ref"
                 },
                 {
