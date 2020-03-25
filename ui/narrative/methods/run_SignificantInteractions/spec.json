@@ -25,8 +25,8 @@
             "id": "matrix_unique_to",
             "optional": true,
             "advanced": false,
-            "allow_multiple": true,
-            "default_values": [ "" ],
+            "allow_multiple": false,
+            "default_values": "",
             "field_type": "text",
             "text_options": {
                 "valid_ws_types": ["KBaseExperiments.CorrelationMatrix"]

@@ -58,6 +58,16 @@ parameters :
             Union: All interactions that meet criteria--frequency 1
             Intersect: Interactions that meet criteria including any given frequency
 
+    frequency:
+        ui-name: |
+            Frequency for Intersection
+        short-hint: |
+            Number of matrices where OTU1<->OTU2 interaction meets the criteria
+            ONLY used if "Search for" is 'Intersection'
+        long-hint: |
+            Number of matrices where OTU1<->OTU2 interaction falls within the given cutoffs
+            ONLY used if "Search for" is 'Intersection'
+
     matrix_unique_to:
         ui-name: |
             Unique To This Matrix
@@ -65,16 +75,6 @@ parameters :
             For unique
         long-hint: |
             For interactions that meet the criteria ONLY in this matrix
-
-    frequency:
-        ui-name: |
-            Frequency of Intersection
-        short-hint: |
-            Number of matrices where OTU1<->OTU2 interaction meets the criteria
-            ONLY used if "Search for" is 'Intersection'
-        long-hint: |
-            Number of matrices where OTU1<->OTU2 interaction falls within the given cutoffs
-            ONLY used if "Search for" is 'Intersection'
 
     corr_matrix_name:
         ui-name: |
