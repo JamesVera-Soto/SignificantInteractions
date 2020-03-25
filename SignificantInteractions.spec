@@ -5,11 +5,11 @@ A KBase module: SignificantInteractions
 module SignificantInteractions {
     typedef structure {
         string MatrixIds;
+        string matrix_unique_to;
         float sig_cutoff;
         float corr_cutoff;
         int frequency;
         string search_for_type;
-        string matrix_unique_to;
         string corr_matrix_name;
     } ReportResults;
 

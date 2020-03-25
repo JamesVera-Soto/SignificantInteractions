@@ -337,9 +337,9 @@ class SI:
             self.sig_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         self.freq_df = pd.DataFrame(index=row_col_list, columns=row_col_list)
         # Make html_str out of html_dict
-        html_str = "<html>" \
-                   "<body>" \
-                   '<table border="2">' \
+        html_str = "<html>\n" \
+                   "<body>\n" \
+                   '<table border="2">\n' \
                    "<tr>"
         if self.is_unique_search:
             html_str += "<td>OTUs: </td><td>Correlation: </td> "
@@ -352,7 +352,7 @@ class SI:
             else:
                 html_str += "<td>Average Significance: </td> "
         html_str += "<td>Frequency:</td>" \
-                    "</tr>"
+                    "\n</tr>\n"
         counter = 0
         for key, val in html_dict.items():
             # the df part
@@ -367,15 +367,15 @@ class SI:
 
             # the html part
             if counter <= 20000:
-                html_str += "<tr>" \
+                html_str += "<tr>\n" \
                             "<td>" + key + ":</td><td>" + str(round(val[0], 5)) + "</td>"
                 if self.sig_cutoff is not None:
                     html_str += "<td>" + str(round(val[1], 5)) + "</td>"
                 html_str += "<td>" + str(val[2]) + " / " + str(quantity) + "</td>" \
-                            + "</tr>"
+                            + "\n</tr>\n"
             counter += 1
-        html_str += "</table>" \
-                    "</body>" \
+        html_str += "</table>\n" \
+                    "</body>\n" \
                     "</html>"
 
         with open(os.path.join(html_folder, "index.html"), 'w') as index_file:
