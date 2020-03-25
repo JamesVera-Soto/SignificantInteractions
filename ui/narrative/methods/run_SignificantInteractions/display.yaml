@@ -48,14 +48,6 @@ parameters :
         long-hint: |
             Frequency is counted when correlation is greater than or equal to cutoff.
 
-    frequency:
-        ui-name: |
-            Frequency
-        short-hint: |
-            Number of matrices where OTU1<->OTU2 interaction is found significant
-        long-hint: |
-            Number of matrices where OTU1<->OTU2 interaction falls within the given cutoffs.
-
     search_for_type:
         ui-name: |
             Search for
@@ -65,6 +57,16 @@ parameters :
             Unique: Interactions that meet criteria for ONLY a particular matrix
             Union: All interactions that meet criteria--frequency 1
             Intersect: Interactions that meet criteria including any given frequency
+
+    frequency:
+        ui-name: |
+            Frequency of Intersection
+        short-hint: |
+            Number of matrices where OTU1<->OTU2 interaction meets the criteria
+            ONLY used if "Search for" is 'Intersection'
+        long-hint: |
+            Number of matrices where OTU1<->OTU2 interaction falls within the given cutoffs
+            ONLY used if "Search for" is 'Intersection'
 
     matrix_unique_to:
         ui-name: |
@@ -83,8 +85,16 @@ parameters :
             Name of CorrelationMatrix that will be created.
 
 description : |
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar efficitur felis, quis tincidunt sem congue at. Vivamus ornare feugiat faucibus. Fusce tincidunt mattis nunc, nec varius purus convallis quis. Nulla facilisi. In at magna dolor. Suspendisse sit amet felis at arcu auctor dapibus vitae pharetra dui. Nam semper mi quis tortor fermentum mollis. Donec a arcu pharetra, rutrum dolor vitae, rutrum mauris. Donec ornare fringilla sagittis. Nam laoreet est in elementum malesuada. Vestibulum id mi eget urna hendrerit feugiat. Donec et ultrices nulla. Phasellus diam eros, dapibus at tempus nec, semper vel ante.</p>
+    <p> This app takes a list of CorrelationMatrices and criteria as input and creates a CorrelationMatrix object
+    as output along with displaying a report.</p>
 
-    <p>Curabitur auctor, metus at tristique euismod, odio elit tincidunt neque, a facilisis sem massa convallis dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc ut hendrerit tellus. Nunc lacinia laoreet finibus. Etiam vitae sagittis enim. Fusce consectetur porta est eu pretium. In hac habitasse platea dictumst. Integer pellentesque sit amet sapien id venenatis. Nullam ac risus at orci eleifend aliquet. Vestibulum elit purus, euismod a nibh quis, pellentesque semper leo. Curabitur ullamcorper felis hendrerit nunc egestas, sit amet pharetra sapien porttitor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas hendrerit ipsum a ligula aliquet vestibulum. Duis a ante urna. Aenean ante neque, rhoncus id luctus ut, accumsan vel nunc.</p>
+    <p> There are three main options the user can search for: </p>
 
-    <p>Pellentesque accumsan aliquet magna, id consectetur tellus condimentum eu. Suspendisse elit dui, ornare ac leo eget, tincidunt feugiat orci. Maecenas auctor gravida lacinia. Mauris interdum nisi vel gravida varius. Nullam tempus, purus eget posuere aliquet, odio elit semper massa, quis facilisis massa odio vitae lacus. Fusce varius enim a mi vehicula tempus. Maecenas faucibus tellus ipsum, at venenatis ipsum auctor et. Suspendisse sem mi, dignissim id porta efficitur, auctor eget magna. Vivamus varius purus nulla, porttitor euismod lorem cursus quis. Nulla sit amet eros nec sem ultrices pulvinar.</p>
+    <p>     <b>Unique:</b> returns interactions that ONLY meet the 'Correlation' and 'Significance' cutoff criteria  in
+                the specified, 'Unique To This Matrix', matrix.</p>
+
+    <p>     <b>Union:</b> returns ALL interactions that meet the 'Correlation' and Significance' cutoff criteria.</p>
+
+    <p>     <b>Intersection:</b> returns the interactions the meet the 'Correlation' and Significance' cutoff criteria
+                for a specified number, 'Frequency', of matrices.</p>
+

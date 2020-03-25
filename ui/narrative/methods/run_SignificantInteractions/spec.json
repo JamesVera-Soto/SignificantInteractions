@@ -52,7 +52,7 @@
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "0" ],
+            "default_values": 0,
             "field_type": "text",
             "text_options": {
                 "validate_as": "int",

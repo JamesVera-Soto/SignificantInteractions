@@ -33,7 +33,7 @@ class SI:
         self.is_unique_search = False
 
     # Returns Correlation and Significance Matrix pd.DataFrame()
-    def get_pd_matrix(self, MatrixId, corr_cutoff, sig_cutoff):
+    def _get_matrix_obj(self, MatrixId, corr_cutoff, sig_cutoff):
 
         logging.info('getting matrix: {}'.format(MatrixId))
 
@@ -60,7 +60,10 @@ class SI:
             pass
 
     # Push matrix keys(index<->column) and values into dictionary
-    def push_to_dict(self, sig_cutoff, corr_cutoff):
+    def _push_to_dict(self, sig_cutoff, corr_cutoff):
+        """
+        Puts all interactions into a dictionary
+        """
 
         logging.info('push_to_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
 
@@ -154,9 +157,12 @@ class SI:
             raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
                              'significance data does not exist.')
 
-    def push_to_unique_dict(self, sig_cutoff, corr_cutoff):
+    def _push_to_unique_dict(self, sig_cutoff, corr_cutoff):
+        """
+        Puts the interactions that meet the criteria of the specified unique matrix into a dictionary
+        """
 
-        logging.info('push_to_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
+        logging.info('_push_to_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff, sig_cutoff))
 
         self.is_unique_search = True
         length = len(self.corr_rows)
@@ -230,7 +236,10 @@ class SI:
             raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
                              'significance data does not exist.')
 
-    def remove_from_unique_dict(self, sig_cutoff, corr_cutoff):
+    def _remove_from_unique_dict(self, sig_cutoff, corr_cutoff):
+        """
+        Removes interactions from dictionary if they are found meeting the criteria in another matrix
+        """
 
         logging.info('remove_from_unique_dict with corr_cutoff: {} , and sig_cutoff: {}'.format(corr_cutoff,
                                                                                                 sig_cutoff))
@@ -288,7 +297,10 @@ class SI:
             raise ValueError('ERROR: no comparing can be performed. Perhaps no corr_cutoff was specified and '
                              'significance data does not exist.')
 
-    def to_html(self, frequency, quantity):
+    def _to_html(self, frequency, quantity):
+        """
+        Creates the html file that will display the results in a table
+        """
 
         logging.info('to_html with frequency: {}, and quantity: {}'.format(frequency, quantity))
 
@@ -383,33 +395,37 @@ class SI:
         pos = 1
         quantity = len(MatrixIds)
         if search_for_type == "unique":
-            if matrix_unique_to == None:
+            if matrix_unique_to is None:
                 raise ValueError('"Unique" was chosen for "Search for" but a matrix was not specified in '
                                  '"Unique To This Matrix"')
             try:
                 MatrixIds.remove(matrix_unique_to)
             except ValueError:
-                pass
+                logging.info('The matrix that was chosen for "Unique To This Matrix" was not in List of Matrices.'
+                             'It will be added now.')
             MatrixIds.insert(0, matrix_unique_to)
             frequency = 1
-            self.get_pd_matrix(MatrixId=matrix_unique_to, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-            self.push_to_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+            self._get_matrix_obj(MatrixId=matrix_unique_to, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+            self._push_to_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
             for Id in MatrixIds:
                 logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
                 pos += 1
                 if Id == matrix_unique_to:
                     continue
-                self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-                self.remove_from_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
+                self._get_matrix_obj(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+                self._remove_from_unique_dict(sig_cutoff=sig_cutoff, corr_cutoff=corr_cutoff)
         if search_for_type == "union":
             frequency = 1
         if search_for_type == "intersection" or search_for_type == "union":
+            if frequency > len(MatrixIds):
+                raise ValueError('Frequency criteria can not have a number greater than the number of matrices '
+                                 'in the list')
             for Id in MatrixIds:
                 logging.info('Analyzing matrix: {} ({} / {})'.format(Id, pos, quantity))
-                self.get_pd_matrix(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
-                self.push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
+                self._get_matrix_obj(MatrixId=Id, corr_cutoff=corr_cutoff, sig_cutoff=sig_cutoff)
+                self._push_to_dict(sig_cutoff=self.sig_cutoff, corr_cutoff=self.corr_cutoff)
                 pos += 1
-        self.to_html(frequency=frequency, quantity=quantity)
+        self._to_html(frequency=frequency, quantity=quantity)
         return {
             'html_paths': self.html_paths,
             'corr_df': self.corr_df,
