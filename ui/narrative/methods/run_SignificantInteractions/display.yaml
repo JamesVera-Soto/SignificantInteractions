@@ -48,7 +48,7 @@ parameters :
         long-hint: |
             Frequency is counted when correlation is greater than or equal to cutoff.
 
-    comparison_for_type:
+    search_for_type:
         ui-name: |
             Comparison for
         short-hint: |
