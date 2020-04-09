@@ -290,7 +290,21 @@
       <option name="project" value="LOCAL" />
       <updated>1586397786256</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Documentation raw img">
+      <created>1586398269127</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1586398269127</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Documentation &lt;/b&gt;">
+      <created>1586398478782</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1586398478782</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -307,8 +321,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="frequency df" />
-    <MESSAGE value="made cutoffs optional" />
     <MESSAGE value="checking if is None" />
     <MESSAGE value="took out default name for created obj" />
     <MESSAGE value="key sort in push_to_dict" />
@@ -332,18 +344,20 @@
     <MESSAGE value="don't allow multiple for unique" />
     <MESSAGE value="no output cell" />
     <MESSAGE value="Documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Documentation" />
+    <MESSAGE value="Documentation raw img" />
+    <MESSAGE value="Documentation &lt;/b&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Documentation &lt;/b&gt;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582245464077">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1582245464077" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1586398268672">
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1586398478358">
       <screen x="67" y="27" width="1853" height="1173" />
     </state>
     <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582497110129" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1586398268672" />
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1586398478358" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="906" y="227" width="424" height="484" key="FileChooserDialogImpl" timestamp="1584467627183">
       <screen x="67" y="27" width="1853" height="1173" />

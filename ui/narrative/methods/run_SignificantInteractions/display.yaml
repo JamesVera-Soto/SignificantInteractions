@@ -112,16 +112,16 @@ description : |
 
     <p>4)	Search for:</p>
 
-    <p style="margin-left:5%; margin-right:10%;">•	Unique: This search option looks for interactions that ONLY meet the
+    <p style="margin-left:5%; margin-right:10%;">-	Unique: This search option looks for interactions that ONLY meet the
     ‘Correlation Cutoff’ and/or ‘Significance Cutoff’ for one specified matrix. If an interaction is found to meet the
     criteria in another matrix, that interaction will be dropped from the result. To specify a matrix, the user has to
     choose one from the ‘Unique To This Matrix’ criteria.</p>
 
-    <p style="margin-left:5%; margin-right:10%;">•	Union: This search keeps track of all interactions that meet the
+    <p style="margin-left:5%; margin-right:10%;">-	Union: This search keeps track of all interactions that meet the
     ‘Correlation Cutoff’ and/or ‘Significance Cutoff’ criteria regardless of which matrix it is or in how many matrices
     it met the criteria in.</p>
 
-    <p style="margin-left:5%; margin-right:10%;">•	Intersection: This search starts out by keeping track of all interactions
+    <p style="margin-left:5%; margin-right:10%;">-	Intersection: This search starts out by keeping track of all interactions
     regardless if they meet the criteria or not. In matrices where the interaction met the criteria, a frequency value for
     that interaction gets incremented. After analyzing the last matrix, it then starts removing interactions that did not
     meet the ‘Frequency for Intersection’ criteria, returning only interactions that met the ‘Correlation Cutoff’ and/or
@@ -143,12 +143,12 @@ description : |
 
     <p><b>Unique:</b></p>
 
-    <p>•	Output matrix contains the correlation and significance(if present) values that the passing interactions had
+    <p>-	Output matrix contains the correlation and significance(if present) values that the passing interactions had
     in the specified matrix they exclusively passed in.</p>
 
     <p><b>Union & Intersection:</b></p>
 
-    <p>•	Output matrix contains the AVERAGE correlation and significance(if present) values—adds up the values then
+    <p>-	Output matrix contains the AVERAGE correlation and significance(if present) values—adds up the values then
     divides by number of matrices. If an interaction is present in one matrix and absent in another, it gets a 0 value
     where it is absent. </p>
 
