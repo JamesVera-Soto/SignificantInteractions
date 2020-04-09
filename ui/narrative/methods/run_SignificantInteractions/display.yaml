@@ -85,16 +85,83 @@ parameters :
             Name of CorrelationMatrix that will be created.
 
 description : |
-    <p> This app takes a list of CorrelationMatrices and criteria as input and creates a CorrelationMatrix object
-    as output along with displaying a report.</p>
+    <h3>Description:</h3>
 
-    <p> There are three main options the user can search for: </p>
+    <p> The purpose of this app is to find interactions that meet a given criteria throughout multiple CorrelationMatrices.
+    This helps users see what organisms interact which each other over a period of time. Interactions are considered to
+    meet the criteria in a matrix if the interaction’s correlation value is higher than the ‘Correlation Cutoff’, and, if
+    ‘Significance Cutoff’ is specified, the interaction’s significance value has to be lower than the ‘Significance Cutoff’.
+    There are three different searches the user can specify—Unique, Union, and Intersection. Each search is described in
+    more detail below. </p>
 
-    <p>     <b>Unique:</b> returns interactions that ONLY meet the 'Correlation' and 'Significance' cutoff criteria  in
-                the specified, 'Unique To This Matrix', matrix.</p>
+    <p>Note that at least one, ‘Correlation Cutoff’ OR ‘Significance Cutoff’ must be specified.</p>
 
-    <p>     <b>Union:</b> returns ALL interactions that meet the 'Correlation' and Significance' cutoff criteria.</p>
+    <p><b>Required:<b/></p>
 
-    <p>     <b>Intersection:</b> returns the interactions the meet the 'Correlation' and Significance' cutoff criteria
-                for a specified number, 'Frequency', of matrices.</p>
+    <p>1)	List of CorrelationMatrix’s: Add multiple CorrelationMatrices.</p>
+
+    <p>2)	Correlation Cutoff: an interaction between one OTU and another OTU is considered to meet the correlation
+    cutoff criteria if its correlation value is greater than the specified cutoff.</p>
+
+    <p>AND/OR</p>
+
+    <p>3)	Significance Cutoff: an interaction between one OTU and another OTU is considered to meet the significance
+    cutoff criteria if its significance value is less than the specified cutoff. Note that not every CorrelationMatrix
+    has significance data. If no significance data is found in a matrix upon running the app, any specified significance
+    cutoff will be ignored for the remainder of the run. </p>
+
+    <p>4)	Search for:</p>
+
+    <p style="margin-left:10%; margin-right:10%;">•	Unique: This search option looks for interactions that ONLY meet the
+    ‘Correlation Cutoff’ and/or ‘Significance Cutoff’ for one specified matrix. If an interaction is found to meet the
+    criteria in another matrix, that interaction will be dropped from the result. To specify a matrix, the user has to
+    choose one from the ‘Unique To This Matrix’ criteria.</p>
+
+    <p style="margin-left:10%; margin-right:10%;">•	Union: This search keeps track of all interactions that meet the
+    ‘Correlation Cutoff’ and/or ‘Significance Cutoff’ criteria regardless of which matrix it is or in how many matrices
+    it met the criteria in.</p>
+
+    <p style="margin-left:10%; margin-right:10%;">•	Intersection: This search starts out by keeping track of all interactions
+    regardless if they meet the criteria or not. In matrices where the interaction met the criteria, a frequency value for
+    that interaction gets incremented. After analyzing the last matrix, it then starts removing interactions that did not
+    meet the ‘Frequency for Intersection’ criteria, returning only interactions that met the ‘Correlation Cutoff’ and/or
+    ‘Significance Cutoff’ criteria for ‘frequency’ number of matrices.</p>
+
+    <p>5)	Output CorrelationMatrix Name: Specify name of output CorrelationMatrix.</p>
+
+    <p><b>Required depending on Search for type:</b></p>
+
+    <p>6)	Unique To This Matrix: If the user chooses the ‘Unique’ search for option, this field is where they choose which
+    matrix they want the exclusive interactions to come from. If ‘Unique’ is chosen and this field is left blank, the app will
+    default the first matrix in the list as the unique matrix.</p>
+
+    <p>7)	Frequency for Intersection: If the user chooses the ‘Intersection’ search for option, this criterion indicates
+    the number of matrices that an interaction has to meet the ‘Correlation Cutoff’ and/or ‘Significance Cutoff’ criteria
+    in order to be in the results.</p>
+
+    <p><b>Information About The Output Matrix:</b></p>
+
+    <p><b>Unique:</b></p>
+
+    <p>•	Output matrix contains the correlation and significance(if present) values that the passing interactions had
+    in the specified matrix they exclusively passed in.</p>
+
+    <p><b>Union & Intersection:</b></p>
+
+    <p>•	Output matrix contains the AVERAGE correlation and significance(if present) values—adds up the values then
+    divides by number of matrices. If an interaction is present in one matrix and absent in another, it gets a 0 value
+    where it is absent. </p>
+
+    <p>Significance data is added to the output matrix if it was present in the matrices provided in the list.</p>
+
+    <p>Frequency data is also added to the output matrix.</p>
+
+    <p>Because of the structure of a CorrelationMatrix, some interactions that did not make the results will still show
+    up in the output matrix and are required to have a numeric value when stored in a CorrelationMatrix. Those interactions
+    are given a ‘correlation value’ of 0 and a ‘significance value’ of 1.</p>
+
+    <p><b>Test Run Images:</b></p>
+
+    <img src="https://github.com/JamesVera-Soto/SignificantInteractions/blob/master/params.png" alt="Example Input">
+    <img src="https://github.com/JamesVera-Soto/SignificantInteractions/blob/master/results.png" alt="Example Results">
 

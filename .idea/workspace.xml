@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="49c9916c-3dae-4202-a824-bf9718624bf4" name="Default Changelist" comment="don't allow multiple for unique">
+    <list default="true" id="49c9916c-3dae-4202-a824-bf9718624bf4" name="Default Changelist" comment="no output cell">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SignificantInteractions/SignificantInteractionsImpl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/display.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/narrative/methods/run_SignificantInteractions/spec.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -276,7 +278,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585156701882</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="no output cell">
+      <created>1585604065932</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1585604065932</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -293,7 +302,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test criteria for html_dict and DataFrame" />
     <MESSAGE value="corr_cutoff" />
     <MESSAGE value="frequency df" />
     <MESSAGE value="made cutoffs optional" />
@@ -318,18 +326,19 @@
     <MESSAGE value="Merged branch to have matrix_unique_to, newlined html" />
     <MESSAGE value="was missing ui for unique" />
     <MESSAGE value="don't allow multiple for unique" />
-    <option name="LAST_COMMIT_MESSAGE" value="don't allow multiple for unique" />
+    <MESSAGE value="no output cell" />
+    <option name="LAST_COMMIT_MESSAGE" value="no output cell" />
   </component>
   <component name="WindowStateProjectService">
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582245464077">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="556" y="274" width="624" height="526" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1582245464077" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1585184488581">
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2" timestamp="1585672437806">
       <screen x="67" y="27" width="1853" height="1173" />
     </state>
     <state x="625" y="76" width="792" height="807" key="CommitChangelistDialog2/67.27.1613.1023@67.27.1613.1023" timestamp="1582497110129" />
-    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1585184488581" />
+    <state x="708" y="83" width="792" height="915" key="CommitChangelistDialog2/67.27.1853.1173@67.27.1853.1173" timestamp="1585672437806" />
     <state x="890" y="80" width="792" height="807" key="CommitChangelistDialog2/67.27.1853.923@67.27.1853.923" timestamp="1581910334757" />
     <state x="906" y="227" width="424" height="484" key="FileChooserDialogImpl" timestamp="1584467627183">
       <screen x="67" y="27" width="1853" height="1173" />

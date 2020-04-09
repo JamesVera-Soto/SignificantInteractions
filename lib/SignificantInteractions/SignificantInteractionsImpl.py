@@ -30,7 +30,7 @@ class SignificantInteractions:
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
-    def _df_to_list(self, df, fillna_val = 0, threshold=None):
+    def _df_to_list(self, df, fillna_val=0, threshold=None):
         """
         _df_to_list: convert Dataframe to FloatMatrix2D matrix data
         """
@@ -68,16 +68,16 @@ class SignificantInteractions:
         else:
             ws_name_id = workspace_name
         corr_data = {}
-        corr_data.update({'coefficient_data': self._df_to_list(corr_df)})
+        corr_data.update({'coefficient_data': self._df_to_list(df=corr_df, fillna_val=0)})
 
         if matrix_ref:
             corr_data.update({'original_matrix_ref': matrix_ref})
 
         if sig_df is not None:
-            corr_data.update({'significance_data': self._df_to_list(sig_df, 1)})
+            corr_data.update({'significance_data': self._df_to_list(df=sig_df, fillna_val=1)})
 
         if freq_df is not None:
-            corr_data.update({'frequency_data': self._df_to_list(freq_df)})
+            corr_data.update({'frequency_data': self._df_to_list(df=freq_df, fillna_val=0)})
 
         obj_type = 'KBaseExperiments.CorrelationMatrix'
         info = self.dfu.save_objects({

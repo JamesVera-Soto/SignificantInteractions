@@ -1,14 +1,13 @@
 {
-    "ver": "0.0.1",
-    "authors": [
-        "james_verasoto"
-    ],
-    "contact": "",
-    "categories": ["active"],
-    "widgets": {
-        "input": null,
-        "output": "no-display"
-    },
+  "ver" : "",
+  "authors" : ["james_verasoto", "weise"],
+  "contact" : "http://kbase.us/contact-us/",
+  "visible" : true,
+  "categories" : ["active","util"],
+  "widgets": {
+    "input": "kbaseNarrativeMethodInput",
+    "output": "no-display"
+  },
     "parameters": [ 
         {
             "id": "MatrixIds",
