@@ -129,7 +129,7 @@ class SignificantInteractions:
         if sig_cutoff is None and corr_cutoff is None:
             raise ValueError("ERROR: Both sig_cutoff and corr_cutoff are null. At least one is needed")
         if frequency is None:
-            frequency = 0
+            frequency = 1
         corr_matrix_name = params.get('corr_matrix_name')
 
         si = SI(token=self.token, callback_url=self.callback_url, scratch=self.shared_folder)
